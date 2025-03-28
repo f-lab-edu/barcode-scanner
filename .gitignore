@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 1aed7d0 (create project)
+>>>>>>> ccc1b71 (create project)
 # Gradle files
 .gradle/
 build/
@@ -31,3 +38,26 @@ google-services.json
 
 # Android Profiling
 *.hprof
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+>>>>>>> daa88fb (Initial commit)
+>>>>>>> 1aed7d0 (create project)
+>>>>>>> ccc1b71 (create project)
