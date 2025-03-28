@@ -1,11 +1,13 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
     namespace = "com.jaewchoi.barcodescanner"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.jaewchoi.barcodescanner"
@@ -33,15 +35,47 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        dataBinding = true
+    }
 }
 
 dependencies {
+    val kotlinVersion: String by project
+    val appCompatVersion: String by project
+    val materialVersion: String by project
+    val constraintLayoutVersion: String by project
+    val junitVersion: String by project
+    val testExtJunitVersion: String by project
+    val espressoVersion: String by project
+    val viewModelKtxVersion: String by project
+    val activityKtxVersion: String by project
+    val fragmentKtxVersion: String by project
+    val coroutineVersion: String by project
+    val retrofitVersion: String by project
+    val hiltVersion: String by project
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    implementation("androidx.core:core-ktx:$kotlinVersion")
+    implementation("androidx.appcompat:appcompat:$appCompatVersion")
+    implementation("com.google.android.material:material:$materialVersion")
+    implementation("androidx.constraintlayout:constraintlayout:$constraintLayoutVersion")
+    testImplementation("junit:junit:$junitVersion")
+    androidTestImplementation("androidx.test.ext:junit:$testExtJunitVersion")
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelKtxVersion")
+    implementation("androidx.activity:activity-ktx:$activityKtxVersion")
+    implementation("androidx.fragment:fragment-ktx:$fragmentKtxVersion")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion")
+
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
+}
+
+kapt {
+    correctErrorTypes = true
 }
