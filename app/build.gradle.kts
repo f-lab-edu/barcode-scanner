@@ -54,6 +54,8 @@ dependencies {
     val coroutineVersion: String by project
     val retrofitVersion: String by project
     val hiltVersion: String by project
+    val cameraxVersion: String by project
+    val mlkitVersion: String by project
 
     implementation("androidx.core:core-ktx:$kotlinVersion")
     implementation("androidx.appcompat:appcompat:$appCompatVersion")
@@ -74,6 +76,14 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
+
+    implementation("androidx.camera:camera-core:$cameraxVersion")
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+    implementation("androidx.camera:camera-mlkit-vision:$cameraxVersion")
+
+    implementation("com.google.mlkit:barcode-scanning:$mlkitVersion")
 }
 
 kapt {
