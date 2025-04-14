@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Barcode Scanner</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="flash_on">Flash On</string>
+    <string name="flash_off">Flash Off</string>
+    <string name="sheet_button">SHEET</string>
+    <string name="share_button">SHARE</string>
+    <string name="copy_button">COPY</string>
+    <string name="cancel_button">CANCEL</string>
 </resources>

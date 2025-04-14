@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 android {
@@ -56,6 +58,8 @@ dependencies {
     val hiltVersion: String by project
     val cameraxVersion: String by project
     val mlkitVersion: String by project
+    val navVersion: String by project
+    val playServicesAuthVersion: String by project
 
     implementation("androidx.core:core-ktx:$kotlinVersion")
     implementation("androidx.appcompat:appcompat:$appCompatVersion")
@@ -84,6 +88,11 @@ dependencies {
     implementation("androidx.camera:camera-mlkit-vision:$cameraxVersion")
 
     implementation("com.google.mlkit:barcode-scanning:$mlkitVersion")
+
+    implementation("androidx.navigation:navigation-fragment:$navVersion")
+    implementation("androidx.navigation:navigation-ui:$navVersion")
+
+    implementation("com.google.android.gms:play-services-auth:$playServicesAuthVersion")
 }
 
 kapt {
