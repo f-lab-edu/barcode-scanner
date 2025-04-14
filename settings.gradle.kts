@@ -2,6 +2,7 @@ pluginManagement {
     val kotlinVersion: String by settings
     val applicationVersion: String by settings
     val hiltVersion: String by settings
+    val googleServiceVersion: String by settings
 
     repositories {
         google()
@@ -12,6 +13,7 @@ pluginManagement {
         id("org.jetbrains.kotlin.android") version kotlinVersion
         id("com.android.application") version applicationVersion
         id("com.google.dagger.hilt.android") version hiltVersion
+        id("com.google.gms.google-services") version googleServiceVersion
     }
 }
 
