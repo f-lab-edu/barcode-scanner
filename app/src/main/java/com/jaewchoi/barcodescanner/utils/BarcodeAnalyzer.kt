@@ -1,4 +1,4 @@
-package com.jaewchoi.barcodescanner
+package com.jaewchoi.barcodescanner.utils
 
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
