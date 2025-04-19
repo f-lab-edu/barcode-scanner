@@ -12,13 +12,14 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.jaewchoi.barcodescanner.databinding.FragmentCameraBinding
+import com.jaewchoi.barcodescanner.utils.BarcodeAnalyzer
 import com.jaewchoi.barcodescanner.viewmodels.CameraViewModel
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -29,7 +30,7 @@ class CameraFragment : Fragment() {
             lifecycleOwner = this@CameraFragment
         }
     }
-    private val viewModel: CameraViewModel by viewModels()
+    private val viewModel: CameraViewModel by activityViewModels()
     private val cameraExecutor: ExecutorService by lazy { Executors.newSingleThreadExecutor() }
     private var camera: Camera? = null
     private lateinit var barcodeScanner: BarcodeScanner
@@ -102,7 +103,7 @@ class CameraFragment : Fragment() {
                 this, cameraSelector, preview, imageAnalysis
             )
         } catch (exc: Exception) {
-            // 카메라 시작 실패
+            exc.printStackTrace()
         }
     }
 
