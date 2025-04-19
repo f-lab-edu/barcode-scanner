@@ -49,14 +49,14 @@ object KeyStoreCryptoHelper {
     }
 
     /**
-     * @param alias 키 식별자 (기본값은 KEY_ALIAS)
+     * @param alias 키 식별자
      * @param plainText 암호화할 문자열
      * @return Base64로 인코딩된 "IV + CipherText"
      */
     fun encrypt(alias: String, plainText: String): String {
         val secretKey = getOrCreateSecretKey(alias)
         cipher.init(Cipher.ENCRYPT_MODE, secretKey)
-        val iv = cipher.iv                      // GCM용 랜덤 IV
+        val iv = cipher.iv
         val cipherText = cipher.doFinal(plainText.toByteArray(charset))
         val combined = ByteBuffer.allocate(iv.size + cipherText.size)
             .put(iv)
@@ -67,7 +67,7 @@ object KeyStoreCryptoHelper {
     }
 
     /**
-     * @param alias 키 식별자 (기본값은 KEY_ALIAS)
+     * @param alias 키 식별자
      * @param encryptedData Base64로 인코딩된 "IV + CipherText"
      * @return 복호화된 평문
      */
