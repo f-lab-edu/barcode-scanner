@@ -1,9 +1,10 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
-    id("com.google.gms.google-services")
     kotlin("plugin.serialization") version "2.0.21"
 }
 
@@ -19,6 +20,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["appAuthRedirectScheme"] = "com.jaewchoi.barcodescanner"
+        buildConfigField("String", "OAUTH_CLIENT_ID", getLocalProperty("client_id"))
     }
 
     buildTypes {
@@ -39,6 +42,7 @@ android {
     }
     buildFeatures {
         dataBinding = true
+        buildConfig = true
     }
 }
 
@@ -59,7 +63,8 @@ dependencies {
     val cameraxVersion: String by project
     val mlkitVersion: String by project
     val navVersion: String by project
-    val playServicesAuthVersion: String by project
+    val appAuthVersion: String by project
+    val datastoreVersion: String by project
 
     implementation("androidx.core:core-ktx:$kotlinVersion")
     implementation("androidx.appcompat:appcompat:$appCompatVersion")
@@ -92,9 +97,20 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment:$navVersion")
     implementation("androidx.navigation:navigation-ui:$navVersion")
 
-    implementation("com.google.android.gms:play-services-auth:$playServicesAuthVersion")
+    implementation("net.openid:appauth:$appAuthVersion")
+
+    implementation("androidx.datastore:datastore-preferences:$datastoreVersion")
 }
 
 kapt {
     correctErrorTypes = true
+}
+
+fun getLocalProperty(key: String): String {
+    val props = Properties()
+    val file = rootProject.file("local.properties")
+    if (file.exists()) {
+        file.inputStream().use { props.load(it) }
+    }
+    return props.getProperty(key, "")
 }

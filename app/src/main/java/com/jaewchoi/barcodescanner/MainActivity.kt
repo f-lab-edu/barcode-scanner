@@ -4,10 +4,16 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import com.jaewchoi.barcodescanner.databinding.ActivityMainBinding
+import com.jaewchoi.barcodescanner.viewmodels.CameraViewModel
+import com.jaewchoi.barcodescanner.viewmodels.SettingViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy {
@@ -15,6 +21,8 @@ class MainActivity : AppCompatActivity() {
             lifecycleOwner = this@MainActivity
         }
     }
+    private val cameraViewModel: CameraViewModel by viewModels()
+    private val settingViewModel: SettingViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -23,6 +31,7 @@ class MainActivity : AppCompatActivity() {
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
             )
         }
+        settingViewModel.initSettings()
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {

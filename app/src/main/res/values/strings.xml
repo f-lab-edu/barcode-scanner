@@ -8,4 +8,7 @@
     <string name="share_button">SHARE</string>
     <string name="copy_button">COPY</string>
     <string name="cancel_button">CANCEL</string>
+    <string name="login">로그인</string>
+    <string name="logout">로그아웃</string>
+    <string name="login_fail_msg">Login failed</string>
 </resources>
