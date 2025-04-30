@@ -1,4 +1,4 @@
-package com.jaewchoi.barcodescanner
+package com.jaewchoi.barcodescanner.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.jaewchoi.barcodescanner.R
 import com.jaewchoi.barcodescanner.databinding.FragmentSettingBinding
 import com.jaewchoi.barcodescanner.viewmodels.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint

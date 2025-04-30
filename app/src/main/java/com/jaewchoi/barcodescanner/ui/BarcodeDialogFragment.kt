@@ -1,4 +1,4 @@
-package com.jaewchoi.barcodescanner
+package com.jaewchoi.barcodescanner.ui
 
 import android.app.Dialog
 import android.content.ClipData
@@ -6,13 +6,15 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import com.google.mlkit.vision.barcode.common.Barcode
+import com.jaewchoi.barcodescanner.R
 import com.jaewchoi.barcodescanner.databinding.FragmentBarcodeDialogBinding
+import com.jaewchoi.barcodescanner.viewmodels.CameraViewModel
 
 class BarcodeDialogFragment(
     private val barcode: Barcode,
@@ -24,6 +26,7 @@ class BarcodeDialogFragment(
             lifecycleOwner = this@BarcodeDialogFragment
         }
     }
+    private val viewModel: CameraViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         setStyle(STYLE_NORMAL, R.style.FullScreenDialogTheme)
@@ -44,9 +47,13 @@ class BarcodeDialogFragment(
         binding.copyButton.setOnClickListener {
             val text = barcode.rawValue
 
-            val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipboard =
+                requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("barcode", text)
             clipboard.setPrimaryClip(clip)
+        }
+        binding.searchSheetButton.setOnClickListener {
+            viewModel.getProduct()
         }
         // 다른 버튼의 클릭 리스너도 추후 구현 예정
 

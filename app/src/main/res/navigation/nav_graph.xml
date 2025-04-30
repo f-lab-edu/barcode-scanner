@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="com.jaewchoi.barcodescanner.CameraFragment"
+        android:name="com.jaewchoi.barcodescanner.ui.CameraFragment"
         android:label="CameraFragment">
         <action
             android:id="@+id/action_cameraFragment_to_settingFragment"
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.jaewchoi.barcodescanner.SettingFragment"
+        android:name="com.jaewchoi.barcodescanner.ui.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
 

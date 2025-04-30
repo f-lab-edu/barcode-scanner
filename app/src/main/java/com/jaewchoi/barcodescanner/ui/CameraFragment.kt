@@ -1,4 +1,4 @@
-package com.jaewchoi.barcodescanner
+package com.jaewchoi.barcodescanner.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -18,6 +18,7 @@ import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
+import com.jaewchoi.barcodescanner.R
 import com.jaewchoi.barcodescanner.databinding.FragmentCameraBinding
 import com.jaewchoi.barcodescanner.utils.BarcodeAnalyzer
 import com.jaewchoi.barcodescanner.viewmodels.CameraViewModel

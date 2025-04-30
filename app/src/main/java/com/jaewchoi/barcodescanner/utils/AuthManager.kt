@@ -27,7 +27,7 @@ class AuthManager @Inject constructor(
         BuildConfig.OAUTH_CLIENT_ID,
         ResponseTypeValues.CODE,
         redirectUri
-    ).setScopes("email", "profile").build()
+    ).setScopes(SCOPE_EMAIL, SCOPE_PROFILE, SCOPE_SPREADSHEETS).build()
 
     fun createAuthRequest() = authRequest
 
@@ -55,5 +55,9 @@ class AuthManager @Inject constructor(
         private const val AUTHORIZATION_ENDPOINT = "https://accounts.google.com/o/oauth2/v2/auth"
         private const val TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
         private const val REDIRECT_URI = "com.jaewchoi.barcodescanner:/oauth2redirect"
+        private const val SCOPE_EMAIL = "email"
+        private const val SCOPE_PROFILE = "profile"
+        private const val SCOPE_SPREADSHEETS =
+            "https://www.googleapis.com/auth/spreadsheets.readonly"
     }
 }
