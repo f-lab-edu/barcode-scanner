@@ -11,4 +11,6 @@
     <string name="login">로그인</string>
     <string name="logout">로그아웃</string>
     <string name="login_fail_msg">Login failed</string>
+    <string name="empty_string"></string>
+    <string name="fail_copy_msg">fail to copy</string>
 </resources>

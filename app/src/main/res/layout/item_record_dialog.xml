@@ -4,23 +4,25 @@
     <data>
 
         <variable
-            name="fieldValue"
-            type="com.jaewchoi.barcodescanner.ui.model.FieldValueItem" />
+            name="recordListItem"
+            type="com.jaewchoi.barcodescanner.ui.model.RecordListItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp">
 
         <TextView
             android:id="@+id/field"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="@{fieldValue.field}"
-            android:textAlignment="center"
+            android:text="@{recordListItem.field}"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/white"
+            android:textSize="24sp"
             app:layout_constraintEnd_toStartOf="@id/value"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -30,8 +32,11 @@
             android:id="@+id/value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{fieldValue.value}"
+            android:paddingStart="16dp"
+            android:text="@{recordListItem.value}"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/white"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/field"
             app:layout_constraintTop_toTopOf="parent"

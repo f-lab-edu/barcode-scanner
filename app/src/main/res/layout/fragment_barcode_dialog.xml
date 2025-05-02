@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.jaewchoi.barcodescanner.ui.model.LoadState" />
+
+        <variable
+            name="viewModel"
+            type="com.jaewchoi.barcodescanner.viewmodels.CameraViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -16,6 +27,7 @@
             android:layout_marginTop="24dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white"
+            android:text="@{viewModel.barcode != null ? viewModel.barcode.displayValue : @string/empty_string}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -27,46 +39,121 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
+            android:text="@{viewModel.barcode != null ? viewModel.barcode.rawValue : @string/empty_string}"
+            android:visibility="@{viewModel.loadState == LoadState.IDLE ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="S0022542419726" />
 
+        <ProgressBar
+            android:id="@+id/barcode_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:visibility="@{viewModel.loadState == LoadState.LOADING ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/record_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="300dp"
+            android:visibility="@{viewModel.loadState == LoadState.SUCCESS ? View.VISIBLE : View.GONE}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:record="@{viewModel.record}"
+            tools:listitem="@layout/item_record_dialog" />
+
         <Button
             android:id="@+id/search_sheet_button"
             style="@style/DialogButtonStyle"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/sheet_button"
+            android:enabled="@{viewModel.loadState != LoadState.LOADING}"
+            android:text="@{viewModel.loadState == LoadState.LOADING ? @string/empty_string  : @string/sheet_button}"
             app:layout_constraintBottom_toTopOf="@id/copy_button"
             app:layout_constraintEnd_toStartOf="@+id/share_button"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/sheet_progress"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:visibility="@{viewModel.loadState == LoadState.LOADING ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/search_sheet_button"
+            app:layout_constraintEnd_toEndOf="@id/search_sheet_button"
+            app:layout_constraintStart_toStartOf="@id/search_sheet_button"
+            app:layout_constraintTop_toTopOf="@id/search_sheet_button" />
 
         <Button
             android:id="@+id/share_button"
             style="@style/DialogButtonStyle"
             android:layout_marginBottom="8dp"
-            android:text="@string/share_button"
+            android:enabled="@{viewModel.loadState != LoadState.LOADING}"
+            android:text="@{viewModel.loadState == LoadState.LOADING ? @string/empty_string  : @string/share_button}"
             app:layout_constraintBottom_toTopOf="@id/copy_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/search_sheet_button" />
+
+        <ProgressBar
+            android:id="@+id/share_progress"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:visibility="@{viewModel.loadState == LoadState.LOADING ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/share_button"
+            app:layout_constraintEnd_toEndOf="@id/share_button"
+            app:layout_constraintStart_toStartOf="@id/share_button"
+            app:layout_constraintTop_toTopOf="@id/share_button" />
 
         <Button
             android:id="@+id/copy_button"
             style="@style/DialogButtonStyle"
             android:layout_marginEnd="8dp"
-            android:text="@string/copy_button"
+            android:enabled="@{viewModel.loadState != LoadState.LOADING}"
+            android:text="@{viewModel.loadState == LoadState.LOADING ? @string/empty_string  : @string/copy_button}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/cancel_button"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <ProgressBar
+            android:id="@+id/copy_progress"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:visibility="@{viewModel.loadState == LoadState.LOADING ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/copy_button"
+            app:layout_constraintEnd_toEndOf="@id/copy_button"
+            app:layout_constraintStart_toStartOf="@id/copy_button"
+            app:layout_constraintTop_toTopOf="@id/copy_button" />
+
         <Button
             android:id="@+id/cancel_button"
             style="@style/DialogButtonStyle"
-            android:text="@string/cancel_button"
+            android:enabled="@{viewModel.loadState != LoadState.LOADING}"
+            android:text="@{viewModel.loadState == LoadState.LOADING ? @string/empty_string  : @string/cancel_button}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/copy_button" />
+
+        <ProgressBar
+            android:id="@+id/cancel_progress"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:visibility="@{viewModel.loadState == LoadState.LOADING ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/cancel_button"
+            app:layout_constraintEnd_toEndOf="@id/cancel_button"
+            app:layout_constraintStart_toStartOf="@id/cancel_button"
+            app:layout_constraintTop_toTopOf="@id/cancel_button" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
