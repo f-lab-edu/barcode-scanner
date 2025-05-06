@@ -2,17 +2,21 @@ package com.jaewchoi.barcodescanner.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.jaewchoi.barcodescanner.databinding.ItemRecordDialogBinding
+import com.jaewchoi.barcodescanner.R
+import com.jaewchoi.barcodescanner.databinding.ItemRecordListBinding
 import com.jaewchoi.barcodescanner.ui.model.RecordListItem
 
-class RecordListAdapters :
+class RecordListAdapters(
+    private val isWhiteBackground: Boolean = false,
+) :
     ListAdapter<RecordListItem, RecordListAdapters.FiledViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = FiledViewHolder(
-        ItemRecordDialogBinding.inflate(
+        ItemRecordListBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
     )
@@ -38,11 +42,18 @@ class RecordListAdapters :
         }
     }
 
-    inner class FiledViewHolder(private val binding: ItemRecordDialogBinding) :
+    inner class FiledViewHolder(private val binding: ItemRecordListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: RecordListItem) {
             binding.recordListItem = item
+            val textColor =
+                ContextCompat.getColor(
+                    itemView.context,
+                    if (isWhiteBackground) R.color.textColorPrimary else R.color.white
+                )
+            binding.value.setTextColor(textColor)
+            binding.field.setTextColor(textColor)
         }
     }
 }

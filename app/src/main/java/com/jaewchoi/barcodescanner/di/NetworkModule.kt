@@ -1,8 +1,11 @@
 package com.jaewchoi.barcodescanner.di
 
+import com.jaewchoi.barcodescanner.data.repository.SheetsRepository
 import com.jaewchoi.barcodescanner.data.repository.UserRepository
+import com.jaewchoi.barcodescanner.data.source.local.SheetsSettingStorage
 import com.jaewchoi.barcodescanner.data.source.local.TokenStorage
 import com.jaewchoi.barcodescanner.domain.usecase.FetchGoogleUserUseCase
+import com.jaewchoi.barcodescanner.domain.usecase.FetchRecordUseCase
 import com.jaewchoi.barcodescanner.network.RecordApi
 import com.jaewchoi.barcodescanner.network.UserInfoApi
 import dagger.Module
@@ -29,9 +32,8 @@ object NetworkModule {
         UserRepository(api, tokenStorage)
 
     @Provides
-    fun provideFetchGoogleUserUseCase(
-        repository: UserRepository
-    ): FetchGoogleUserUseCase = FetchGoogleUserUseCase(repository)
+    fun provideFetchGoogleUserUseCase(repository: UserRepository) =
+        FetchGoogleUserUseCase(repository)
 
     @Provides
     fun provideProductApi(tokenStorage: TokenStorage): RecordApi {
@@ -42,6 +44,19 @@ object NetworkModule {
             .create(RecordApi::class.java)
     }
 
+    @Provides
+    fun provideSheetsRepository(
+        api: RecordApi,
+        sheetsStorage: SheetsSettingStorage,
+        tokenStorage: TokenStorage
+    ): SheetsRepository {
+        return SheetsRepository(api, sheetsStorage, tokenStorage)
+    }
+
+    @Provides
+    fun provideFetchRecordUseCase(repository: SheetsRepository) =
+        FetchRecordUseCase(repository)
+
     private const val USER_INFO_URI = "https://www.googleapis.com/oauth2/v2/"
-    private const val PRODUCT_URI = "https://searchproduct-pg73pmoduq-uc.a.run.app/"
+    private const val PRODUCT_URI = "https://searchrecord-pg73pmoduq-uc.a.run.app/"
 }

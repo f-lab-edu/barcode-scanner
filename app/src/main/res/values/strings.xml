@@ -13,4 +13,15 @@
     <string name="login_fail_msg">Login failed</string>
     <string name="empty_string"></string>
     <string name="fail_copy_msg">fail to copy</string>
+    <string name="edit_file_id_hint">예: 1sOgrFQDhR6BaCVWFCE71swOdYIraF7uY3cIEIcamqEw</string>
+    <string name="edit_sheets_name_hint">예: 상품목록</string>
+    <string name="edit_field_count_hint">예: 4</string>
+    <string name="edit_table_cell_hint">예: B2</string>
+    <string name="text_file_id_string">시트 파일 ID</string>
+    <string name="text_sheets_name_string">시트 이름</string>
+    <string name="text_field_count_string">열 개수</string>
+    <string name="text_table_cell_string">테이블 시작 셀</string>
+    <string name="text_barcode_column_string">바코드 열</string>
+    <string name="edit_barcode_column_hint">예: D</string>
+    <string name="delete_button">DELETE</string>
 </resources>

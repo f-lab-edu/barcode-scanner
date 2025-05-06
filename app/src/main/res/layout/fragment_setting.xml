@@ -112,6 +112,7 @@
             android:id="@+id/layout_camera_setting"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:clickable="true"
             android:focusable="true"
             android:orientation="horizontal"

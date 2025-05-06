@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -12,12 +14,10 @@
             type="com.jaewchoi.barcodescanner.viewmodels.CameraViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="48dp"
+        android:paddingHorizontal="32dp"
         android:paddingVertical="24dp">
 
         <TextView
@@ -25,9 +25,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:text="@{viewModel.barcode != null ? viewModel.barcode.displayValue : @string/empty_string}"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white"
-            android:text="@{viewModel.barcode != null ? viewModel.barcode.displayValue : @string/empty_string}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,9 +37,9 @@
             android:id="@+id/value_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{viewModel.barcode != null ? viewModel.barcode.rawValue : @string/empty_string}"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
-            android:text="@{viewModel.barcode != null ? viewModel.barcode.rawValue : @string/empty_string}"
             android:visibility="@{viewModel.loadState == LoadState.IDLE ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -69,8 +69,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.498"
             app:record="@{viewModel.record}"
-            tools:listitem="@layout/item_record_dialog" />
+            tools:listitem="@layout/item_record_list" />
 
         <Button
             android:id="@+id/search_sheet_button"
