@@ -12,4 +12,24 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">#CC000000</item>
     </style>
+
+    <style name="TextInputLayoutStyle" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="hintTextAppearance">@style/TextAppearance.AppCompat.Title</item>
+        <item name="expandedHintEnabled">false</item>
+        <item name="boxStrokeColor">@color/selector_edit_text_outline</item>
+        <item name="hintTextColor">#3F51B5</item>
+        <item name="android:textColorHint">@color/textColorPrimary</item>
+    </style>
+
+    <style name="TextInputEditTextStyle" parent="Widget.Material3.TextInputEditText.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:textColorHint">@color/textHintColor</item>
+    </style>
 </resources>

@@ -10,7 +10,7 @@ import com.jaewchoi.barcodescanner.domain.model.AuthToken
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "auth_prefs")
+private val Context.tokenDataStore: DataStore<Preferences> by preferencesDataStore(name = "auth_prefs")
 
 class TokenStorage @Inject constructor(
     private val context: Context
@@ -26,7 +26,7 @@ class TokenStorage @Inject constructor(
     }
 
     suspend fun saveAuthToken(token: AuthToken) {
-        context.dataStore.edit { prefs ->
+        context.tokenDataStore.edit { prefs ->
             prefs[Keys.ACCESS_TOKEN] =
                 KeyStoreCryptoHelper.encrypt(AUTH_TOKEN_ALIAS, token.accessToken)
             token.refreshToken?.let {
@@ -38,14 +38,14 @@ class TokenStorage @Inject constructor(
     }
 
     suspend fun clearAuthToken() {
-        context.dataStore.edit { prefs ->
+        context.tokenDataStore.edit { prefs ->
             prefs.remove(Keys.ACCESS_TOKEN)
             prefs.remove(Keys.REFRESH_TOKEN)
         }
     }
 
     suspend fun getAuthToken(): AuthToken? {
-        val prefs = context.dataStore.data.first()
+        val prefs = context.tokenDataStore.data.first()
         val encAccess = prefs[Keys.ACCESS_TOKEN] ?: return null
 
         val access = KeyStoreCryptoHelper.decrypt(AUTH_TOKEN_ALIAS, encAccess)

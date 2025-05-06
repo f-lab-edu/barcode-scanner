@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
     kotlin("plugin.serialization") version "2.0.21"
 }
 
@@ -65,6 +66,7 @@ dependencies {
     val navVersion: String by project
     val appAuthVersion: String by project
     val datastoreVersion: String by project
+    val roomVersion: String by project
 
     implementation("androidx.core:core-ktx:$kotlinVersion")
     implementation("androidx.appcompat:appcompat:$appCompatVersion")
@@ -100,6 +102,10 @@ dependencies {
     implementation("net.openid:appauth:$appAuthVersion")
 
     implementation("androidx.datastore:datastore-preferences:$datastoreVersion")
+
+    implementation("androidx.room:room-runtime:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
 }
 
 kapt {

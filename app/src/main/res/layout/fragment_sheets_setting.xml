@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.jaewchoi.barcodescanner.viewmodels.SettingViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingHorizontal="16dp"
+        tools:context="ui.SheetsSettingFragment">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_file_id"
+            style="@style/TextInputLayoutStyle"
+            android:hint="@string/text_file_id_string"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_file_id"
+                style="@style/TextInputEditTextStyle"
+                android:hint="@string/edit_file_id_hint"
+                android:inputType="text"
+                app:bindText="@={viewModel.fileID}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_sheets_name"
+            style="@style/TextInputLayoutStyle"
+            android:hint="@string/text_sheets_name_string"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_file_id">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_sheets_name"
+                style="@style/TextInputEditTextStyle"
+                android:hint="@string/edit_sheets_name_hint"
+                android:inputType="text"
+                app:bindText="@={viewModel.sheetName}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_table_cell"
+            style="@style/TextInputLayoutStyle"
+            android:hint="@string/text_table_cell_string"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_sheets_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_table_cell"
+                style="@style/TextInputEditTextStyle"
+                android:hint="@string/edit_table_cell_hint"
+                android:inputType="text"
+                app:bindText="@={viewModel.tableCell}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_field_count"
+            style="@style/TextInputLayoutStyle"
+            android:hint="@string/text_field_count_string"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_table_cell">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_field_count"
+                style="@style/TextInputEditTextStyle"
+                android:hint="@string/edit_field_count_hint"
+                android:inputType="number"
+                app:bindText="@={viewModel.fieldCount}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_barcode_column"
+            style="@style/TextInputLayoutStyle"
+            android:hint="@string/text_barcode_column_string"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_field_count">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_barcode_column"
+                style="@style/TextInputEditTextStyle"
+                android:hint="@string/edit_barcode_column_hint"
+                android:inputType="text"
+                app:bindText="@={viewModel.barcodeColumn}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="저장"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_barcode_column" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
