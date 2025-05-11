@@ -10,7 +10,7 @@ import com.jaewchoi.barcodescanner.data.source.local.TokenStorage
 import com.jaewchoi.barcodescanner.data.source.network.Record
 import com.jaewchoi.barcodescanner.domain.usecase.FetchRecordUseCase
 import com.jaewchoi.barcodescanner.domain.usecase.SaveHistoryUseCase
-import com.jaewchoi.barcodescanner.network.RecordApi
+import com.jaewchoi.barcodescanner.data.source.network.RecordApi
 import com.jaewchoi.barcodescanner.ui.model.LoadState
 import com.jaewchoi.barcodescanner.ui.model.RecordListItem
 import dagger.hilt.android.lifecycle.HiltViewModel

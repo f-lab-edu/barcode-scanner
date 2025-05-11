@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.jaewchoi.barcodescanner.domain.model.AuthToken
 import kotlinx.coroutines.flow.first
+import net.openid.appauth.AuthState
 import javax.inject.Inject
 
 private val Context.tokenDataStore: DataStore<Preferences> by preferencesDataStore(name = "auth_prefs")
@@ -19,10 +20,26 @@ class TokenStorage @Inject constructor(
     private object Keys {
         val ACCESS_TOKEN = stringPreferencesKey("accessToken")
         val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
+        val KEY_STATE = stringPreferencesKey("keyState")
     }
 
     companion object {
         private const val AUTH_TOKEN_ALIAS = "auth_token_alias"
+    }
+
+    suspend fun save(authState: AuthState) {
+        val stateJson = authState.jsonSerialize().toString()
+        context.tokenDataStore.edit { prefs ->
+            prefs[Keys.KEY_STATE] =
+                KeyStoreCryptoHelper.encrypt(AUTH_TOKEN_ALIAS, stateJson)
+        }
+    }
+
+    suspend fun load(): AuthState? {
+        val prefs = context.tokenDataStore.data.first()
+        val encAuthState = prefs[Keys.KEY_STATE] ?: return null
+        val authStateJson = KeyStoreCryptoHelper.decrypt(AUTH_TOKEN_ALIAS, encAuthState)
+        return AuthState.jsonDeserialize(authStateJson)
     }
 
     suspend fun saveAuthToken(token: AuthToken) {

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.jaewchoi.barcodescanner.data.source.local.TokenStorage
 import com.jaewchoi.barcodescanner.data.source.network.UserInfo
 import com.jaewchoi.barcodescanner.domain.model.SheetsSettings
 import com.jaewchoi.barcodescanner.domain.usecase.ClearSheetsSettingsUseCase
@@ -50,10 +51,12 @@ class SettingViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val settings = fetchSheetsSettingsUseCase()
-                Log.d("settings_", "init : $settings")
                 _sheetsSettings.postValue(settings)
-                _userInfo.postValue(fetchGoogleUserUseCase())
+                val userinfo = fetchGoogleUserUseCase()
+                Log.d("userinfo", "afterLogin: $userinfo")
+                _userInfo.postValue(userinfo)
             } catch (e: Exception) {
+                Log.e("userinfo", "afterLogin: ${e.message}")
                 _userInfo.value = null
             }
         }
@@ -83,10 +86,13 @@ class SettingViewModel @Inject constructor(
                         ?: Exception("response is null")
 
                 handleGoogleAuthUseCase(authResponse)
-                _userInfo.postValue(fetchGoogleUserUseCase())
+                val userinfo = fetchGoogleUserUseCase()
+                Log.d("userinfo", "login: $userinfo")
+                _userInfo.postValue(userinfo)
 
             } catch (e: Exception) {
                 // 로그인 실패
+                Log.e("userinfo", "login: ${e.message}")
                 failCallback()
             }
         }
@@ -104,7 +110,6 @@ class SettingViewModel @Inject constructor(
             }
         }
     }
-
 
     /**
      * bindText's two-way data binding getter setter

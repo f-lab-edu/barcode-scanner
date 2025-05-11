@@ -4,6 +4,7 @@ import android.net.Uri
 import com.jaewchoi.barcodescanner.BuildConfig
 import com.jaewchoi.barcodescanner.domain.model.AuthToken
 import kotlinx.coroutines.suspendCancellableCoroutine
+import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
@@ -14,7 +15,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 class AuthManager @Inject constructor(
-    private val authService: AuthorizationService
+    private val authService: AuthorizationService,
 ) {
     private val serviceConfig = AuthorizationServiceConfiguration(
         Uri.parse(AUTHORIZATION_ENDPOINT),
@@ -43,6 +44,29 @@ class AuthManager @Inject constructor(
                 }
                 val refreshToken = tokenResponse.refreshToken
                 cont.resume(AuthToken(accessToken, refreshToken))
+            } else {
+                cont.resumeWithException(
+                    authException ?: Exception("Token exchange failed")
+                )
+            }
+        }
+    }
+
+    suspend fun exchangeToken2(
+        authResponse: AuthorizationResponse
+    ): AuthState = suspendCancellableCoroutine { cont ->
+        val tokenRequest = authResponse.createTokenExchangeRequest()
+
+        authService.performTokenRequest(tokenRequest) { tokenResponse, authException ->
+            if (tokenResponse != null) {
+                // 1) AuthState 초기화
+
+                val authState = AuthState(authResponse, authException)
+                // 2) 토큰 응답 반영
+
+                authState.update(tokenResponse, authException)
+                authState.needsTokenRefresh = true
+                cont.resume(authState)
             } else {
                 cont.resumeWithException(
                     authException ?: Exception("Token exchange failed")

@@ -6,8 +6,9 @@ import com.jaewchoi.barcodescanner.data.source.local.SheetsSettingStorage
 import com.jaewchoi.barcodescanner.data.source.local.TokenStorage
 import com.jaewchoi.barcodescanner.domain.usecase.FetchGoogleUserUseCase
 import com.jaewchoi.barcodescanner.domain.usecase.FetchRecordUseCase
-import com.jaewchoi.barcodescanner.network.RecordApi
-import com.jaewchoi.barcodescanner.network.UserInfoApi
+import com.jaewchoi.barcodescanner.data.source.network.RecordApi
+import com.jaewchoi.barcodescanner.data.source.network.TokenAuthenticator
+import com.jaewchoi.barcodescanner.data.source.network.UserInfoApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,8 +29,12 @@ object NetworkModule {
     }
 
     @Provides
-    fun provideUserRepository(api: UserInfoApi, tokenStorage: TokenStorage) =
-        UserRepository(api, tokenStorage)
+    fun provideUserRepository(
+        api: UserInfoApi,
+        tokenAuthenticator: TokenAuthenticator,
+        tokenStorage: TokenStorage
+    ) =
+        UserRepository(api, tokenAuthenticator, tokenStorage)
 
     @Provides
     fun provideFetchGoogleUserUseCase(repository: UserRepository) =
@@ -48,9 +53,10 @@ object NetworkModule {
     fun provideSheetsRepository(
         api: RecordApi,
         sheetsStorage: SheetsSettingStorage,
+        tokenAuthenticator: TokenAuthenticator,
         tokenStorage: TokenStorage
     ): SheetsRepository {
-        return SheetsRepository(api, sheetsStorage, tokenStorage)
+        return SheetsRepository(api, sheetsStorage, tokenAuthenticator, tokenStorage)
     }
 
     @Provides
