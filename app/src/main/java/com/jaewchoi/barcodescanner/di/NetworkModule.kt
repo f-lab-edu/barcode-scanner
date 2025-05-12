@@ -34,7 +34,7 @@ object NetworkModule {
         tokenAuthenticator: TokenAuthenticator,
         tokenStorage: TokenStorage
     ) =
-        UserRepository(api, tokenAuthenticator, tokenStorage)
+        UserRepository(api, tokenAuthenticator)
 
     @Provides
     fun provideFetchGoogleUserUseCase(repository: UserRepository) =
@@ -56,7 +56,7 @@ object NetworkModule {
         tokenAuthenticator: TokenAuthenticator,
         tokenStorage: TokenStorage
     ): SheetsRepository {
-        return SheetsRepository(api, sheetsStorage, tokenAuthenticator, tokenStorage)
+        return SheetsRepository(api, sheetsStorage, tokenAuthenticator)
     }
 
     @Provides
