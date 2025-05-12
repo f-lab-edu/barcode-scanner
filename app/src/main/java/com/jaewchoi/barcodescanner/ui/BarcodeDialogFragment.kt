@@ -17,6 +17,7 @@ import com.jaewchoi.barcodescanner.R
 import com.jaewchoi.barcodescanner.adapters.RecordListAdapters
 import com.jaewchoi.barcodescanner.databinding.FragmentBarcodeDialogBinding
 import com.jaewchoi.barcodescanner.viewmodels.CameraViewModel
+import com.jaewchoi.barcodescanner.viewmodels.ScanHistoryViewModel
 
 class BarcodeDialogFragment(
     private val onDialogDismissed: () -> Unit
@@ -29,6 +30,7 @@ class BarcodeDialogFragment(
     }
 
     private val viewModel: CameraViewModel by activityViewModels()
+    private val historyViewModel: ScanHistoryViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         setStyle(STYLE_NORMAL, R.style.FullScreenDialogTheme)
@@ -80,6 +82,7 @@ class BarcodeDialogFragment(
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
+        historyViewModel.initHistories()
         viewModel.barcodeDialogDismiss()
         onDialogDismissed()
     }

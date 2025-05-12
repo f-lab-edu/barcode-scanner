@@ -31,8 +31,8 @@ class ScanHistoryFragment : Fragment() {
         val adapter = HistoryListAdapter(
             { id -> viewModel.deleteHistory(id) },
             { barcodeValue ->
-                viewModel.fetchRecord(barcodeValue)
                 findNavController().navigate(R.id.action_scanHistoryFragment_to_recordViewFragment)
+                viewModel.fetchRecord(barcodeValue)
             }
         )
         binding.historyList.adapter = adapter

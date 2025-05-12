@@ -22,7 +22,6 @@ import com.jaewchoi.barcodescanner.R
 import com.jaewchoi.barcodescanner.databinding.FragmentCameraBinding
 import com.jaewchoi.barcodescanner.utils.BarcodeAnalyzer
 import com.jaewchoi.barcodescanner.viewmodels.CameraViewModel
-import com.jaewchoi.barcodescanner.viewmodels.ScanHistoryViewModel
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -33,7 +32,6 @@ class CameraFragment : Fragment() {
         }
     }
     private val viewModel: CameraViewModel by activityViewModels()
-    private val historyViewModel: ScanHistoryViewModel by activityViewModels()
     private val cameraExecutor: ExecutorService by lazy { Executors.newSingleThreadExecutor() }
     private var camera: Camera? = null
     private lateinit var barcodeScanner: BarcodeScanner
@@ -70,7 +68,6 @@ class CameraFragment : Fragment() {
         barcodeScanner = BarcodeScanning.getClient(options)
         barcodeAnalyzer = BarcodeAnalyzer(barcodeScanner) { barcode ->
             viewModel.setBarcodeData(barcode)
-            historyViewModel.initHistories()
             startBarcodeDialog()
         }
 
@@ -107,7 +104,6 @@ class CameraFragment : Fragment() {
                     barcodeAnalyzer
                         ?: BarcodeAnalyzer(barcodeScanner) { barcode ->
                             viewModel.setBarcodeData(barcode)
-                            historyViewModel.initHistories()
                             startBarcodeDialog()
                         }.also { barcodeAnalyzer = it }
                 )
