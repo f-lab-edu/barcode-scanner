@@ -82,7 +82,7 @@ class BarcodeDialogFragment(
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        historyViewModel.initHistories()
+        historyViewModel.fetchHistory()
         viewModel.barcodeDialogDismiss()
         onDialogDismissed()
     }

@@ -56,7 +56,7 @@ class ScanHistoryViewModel @Inject constructor(
         }
     }
 
-    private fun fetchHistory() {
+    fun fetchHistory() {
         viewModelScope.launch(Dispatchers.IO) {
             val histories = fetchHistoryUseCase()
             _histories.postValue(histories)
@@ -66,6 +66,7 @@ class ScanHistoryViewModel @Inject constructor(
     fun fetchRecord(barcodeValue: String) {
         viewModelScope.launch {
             try {
+                _record.value = null
                 _loadState.value = LoadState.LOADING
                 _record.value = fetchRecordUseCase(barcodeValue)
                 _loadState.value = LoadState.SUCCESS
