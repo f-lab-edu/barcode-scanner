@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.jaewchoi.barcodescanner.R
 import com.jaewchoi.barcodescanner.databinding.FragmentSettingBinding
 import com.jaewchoi.barcodescanner.viewmodels.SettingViewModel
@@ -46,6 +47,10 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding.viewModel = viewModel
+
+        binding.layoutSheetSetting.setOnClickListener {
+            findNavController().navigate(R.id.action_settingFragment_to_sheetsSettingFragment)
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

@@ -5,30 +5,30 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.mlkit.vision.barcode.common.Barcode
-import com.jaewchoi.barcodescanner.data.source.local.TokenStorage
+import androidx.room.PrimaryKey
+import com.jaewchoi.barcodescanner.data.source.local.ScanHistory
 import com.jaewchoi.barcodescanner.data.source.network.Record
+import com.jaewchoi.barcodescanner.domain.usecase.ClearHistoryUseCase
+import com.jaewchoi.barcodescanner.domain.usecase.DeleteHistoryUseCase
+import com.jaewchoi.barcodescanner.domain.usecase.FetchHistoryUseCase
 import com.jaewchoi.barcodescanner.domain.usecase.FetchRecordUseCase
-import com.jaewchoi.barcodescanner.domain.usecase.SaveHistoryUseCase
-import com.jaewchoi.barcodescanner.network.RecordApi
 import com.jaewchoi.barcodescanner.ui.model.LoadState
-import com.jaewchoi.barcodescanner.ui.model.RecordListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CameraViewModel @Inject constructor(
+class ScanHistoryViewModel @Inject constructor(
+    private val fetchHistoryUseCase: FetchHistoryUseCase,
     private val fetchRecordUseCase: FetchRecordUseCase,
-    private val saveHistoryUseCase: SaveHistoryUseCase,
+    private val deleteHistoryUseCase: DeleteHistoryUseCase,
+    private val clearHistoryUseCase: ClearHistoryUseCase
 ) : ViewModel() {
-    private val _barcode = MutableLiveData<Barcode?>(null)
-    val barcode: LiveData<Barcode?>
-        get() = _barcode
-    private val _isFlashOn = MutableLiveData(false)
-    val isFlashOn: LiveData<Boolean>
-        get() = _isFlashOn
+
+    private val _histories = MutableLiveData<List<ScanHistory>>(emptyList())
+    val histories: LiveData<List<ScanHistory>>
+        get() = _histories
 
     private val _record = MutableLiveData<Record?>(null)
     val record: LiveData<Record?>
@@ -38,31 +38,35 @@ class CameraViewModel @Inject constructor(
     val loadState: LiveData<LoadState>
         get() = _loadState
 
-    fun toggleFlash() {
-        val value = _isFlashOn.value
-        value?.let {
-            _isFlashOn.value = !value
-        }
+    fun initHistories() {
+        fetchHistory()
     }
 
-    fun setBarcodeData(barcode: Barcode) {
-        _barcode.value = barcode
+    fun clearAllHistory() {
         viewModelScope.launch(Dispatchers.IO) {
-            saveHistoryUseCase(barcode.rawValue ?: "")
+            clearHistoryUseCase()
+            fetchHistory()
         }
     }
 
-    fun barcodeDialogDismiss() {
-        _loadState.value = LoadState.IDLE
-        _barcode.value = null
-        _record.value = null
+    fun deleteHistory(id: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteHistoryUseCase(id)
+            fetchHistory()
+        }
     }
 
-    fun requestRecord() {
+    private fun fetchHistory() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val histories = fetchHistoryUseCase()
+            _histories.postValue(histories)
+        }
+    }
+
+    fun fetchRecord(barcodeValue: String) {
         viewModelScope.launch {
             try {
                 _loadState.value = LoadState.LOADING
-                val barcodeValue = _barcode.value?.rawValue ?: throw Exception("barcode is null")
                 _record.value = fetchRecordUseCase(barcodeValue)
                 _loadState.value = LoadState.SUCCESS
             } catch (e: Exception) {
@@ -71,5 +75,4 @@ class CameraViewModel @Inject constructor(
             }
         }
     }
-
 }

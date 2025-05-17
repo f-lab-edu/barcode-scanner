@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.jaewchoi.barcodescanner.databinding.ActivityMainBinding
 import com.jaewchoi.barcodescanner.viewmodels.CameraViewModel
+import com.jaewchoi.barcodescanner.viewmodels.ScanHistoryViewModel
 import com.jaewchoi.barcodescanner.viewmodels.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     }
     private val cameraViewModel: CameraViewModel by viewModels()
     private val settingViewModel: SettingViewModel by viewModels()
+    private val scanHistoryViewModel: ScanHistoryViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
         settingViewModel.initSettings()
+        scanHistoryViewModel.initHistories()
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {

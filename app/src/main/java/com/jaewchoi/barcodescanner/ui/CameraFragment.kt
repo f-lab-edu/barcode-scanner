@@ -22,6 +22,7 @@ import com.jaewchoi.barcodescanner.R
 import com.jaewchoi.barcodescanner.databinding.FragmentCameraBinding
 import com.jaewchoi.barcodescanner.utils.BarcodeAnalyzer
 import com.jaewchoi.barcodescanner.viewmodels.CameraViewModel
+import com.jaewchoi.barcodescanner.viewmodels.ScanHistoryViewModel
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -32,6 +33,7 @@ class CameraFragment : Fragment() {
         }
     }
     private val viewModel: CameraViewModel by activityViewModels()
+    private val historyViewModel: ScanHistoryViewModel by activityViewModels()
     private val cameraExecutor: ExecutorService by lazy { Executors.newSingleThreadExecutor() }
     private var camera: Camera? = null
     private lateinit var barcodeScanner: BarcodeScanner
@@ -48,6 +50,9 @@ class CameraFragment : Fragment() {
         binding.btnSetting.setOnClickListener {
             findNavController().navigate(R.id.action_cameraFragment_to_settingFragment)
         }
+        binding.btnHistory.setOnClickListener {
+            findNavController().navigate(R.id.action_cameraFragment_to_scanHistoryFragment)
+        }
         return binding.root
     }
 
@@ -59,7 +64,11 @@ class CameraFragment : Fragment() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
 
         barcodeScanner = BarcodeScanning.getClient(options)
-        barcodeAnalyzer = BarcodeAnalyzer(barcodeScanner) { barcode -> scanBarcode(barcode) }
+        barcodeAnalyzer = BarcodeAnalyzer(barcodeScanner) { barcode ->
+            viewModel.setBarcodeData(barcode)
+            historyViewModel.initHistories()
+            startBarcodeDialog()
+        }
 
         cameraProviderFuture.addListener({
             cameraProvider = cameraProviderFuture.get()
@@ -91,11 +100,13 @@ class CameraFragment : Fragment() {
             .also {
                 it.setAnalyzer(
                     cameraExecutor,
-                    barcodeAnalyzer ?: BarcodeAnalyzer(barcodeScanner) { barcode ->
-                        scanBarcode(
-                            barcode
-                        )
-                    })
+                    barcodeAnalyzer
+                        ?: BarcodeAnalyzer(barcodeScanner) { barcode ->
+                            viewModel.setBarcodeData(barcode)
+                            historyViewModel.initHistories()
+                            startBarcodeDialog()
+                        }.also { barcodeAnalyzer = it }
+                )
             }
         val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
@@ -108,8 +119,8 @@ class CameraFragment : Fragment() {
         }
     }
 
-    private fun scanBarcode(barcode: Barcode) {
-        val dialogFragment = BarcodeDialogFragment(barcode) { bindCameraUseCases() }
+    private fun startBarcodeDialog() {
+        val dialogFragment = BarcodeDialogFragment { bindCameraUseCases() }
         cameraProvider?.unbindAll()
         dialogFragment.show(parentFragmentManager, "BarcodeDialog")
     }
