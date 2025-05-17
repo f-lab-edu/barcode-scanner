@@ -40,12 +40,16 @@ class CameraFragment : Fragment() {
     private var cameraProvider: ProcessCameraProvider? = null
     private var barcodeAnalyzer: BarcodeAnalyzer? = null
 
+    override fun onStart() {
+        super.onStart()
+        startCamera()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding.viewModel = viewModel
-        startCamera()
         initFlash()
         binding.btnSetting.setOnClickListener {
             findNavController().navigate(R.id.action_cameraFragment_to_settingFragment)
@@ -114,6 +118,11 @@ class CameraFragment : Fragment() {
             camera = cameraProvider?.bindToLifecycle(
                 this, cameraSelector, preview, imageAnalysis
             )
+            if (camera?.cameraInfo?.hasFlashUnit() == true
+                && viewModel.isFlashOn.value == true
+            ) {
+                camera?.cameraControl?.enableTorch(true)
+            }
         } catch (exc: Exception) {
             exc.printStackTrace()
         }
@@ -125,9 +134,15 @@ class CameraFragment : Fragment() {
         dialogFragment.show(parentFragmentManager, "BarcodeDialog")
     }
 
+    override fun onStop() {
+        super.onStop()
+        cameraProvider?.unbindAll()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
         barcodeScanner.close()
     }
+
 }

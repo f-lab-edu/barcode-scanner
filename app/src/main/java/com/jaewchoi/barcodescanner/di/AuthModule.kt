@@ -3,6 +3,7 @@ package com.jaewchoi.barcodescanner.di
 import android.content.Context
 import com.jaewchoi.barcodescanner.data.repository.AuthRepository
 import com.jaewchoi.barcodescanner.data.source.local.TokenStorage
+import com.jaewchoi.barcodescanner.data.source.network.TokenAuthenticator
 import com.jaewchoi.barcodescanner.utils.AuthManager
 import dagger.Module
 import dagger.Provides
@@ -30,4 +31,9 @@ object AuthModule {
     @Provides
     fun provideAuthRepository(authManager: AuthManager, tokenStorage: TokenStorage) =
         AuthRepository(authManager, tokenStorage)
+
+    @Provides
+    fun provideTokenAuthenticator(authService: AuthorizationService, tokenStorage: TokenStorage) =
+        TokenAuthenticator(authService, tokenStorage)
+
 }
