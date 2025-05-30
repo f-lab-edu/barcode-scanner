@@ -1,9 +1,12 @@
 package com.jaewchoi.barcodescanner.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -33,6 +36,21 @@ class ScanHistoryFragment : Fragment() {
             { barcodeValue ->
                 findNavController().navigate(R.id.action_scanHistoryFragment_to_recordViewFragment)
                 viewModel.fetchRecord(barcodeValue)
+            },
+            { url ->
+                val intent = url
+                    ?.takeIf { it.isNotBlank() }
+                    ?.let { Intent(Intent.ACTION_VIEW, Uri.parse(it)) }
+                val pm = requireActivity().packageManager
+                if (intent?.resolveActivity(pm) != null) {
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.fail_open_url),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         )
         binding.historyList.adapter = adapter

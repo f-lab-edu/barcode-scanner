@@ -8,5 +8,6 @@ import androidx.room.PrimaryKey
 data class ScanHistory(
     @PrimaryKey(autoGenerate = true) val id: Long = 0L,
     val barcode: String,
+    val url: String?,
     val savedTimeMilli: Long,
 )

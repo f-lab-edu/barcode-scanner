@@ -18,6 +18,7 @@ import com.google.mlkit.vision.barcode.common.Barcode
 import com.jaewchoi.barcodescanner.R
 import com.jaewchoi.barcodescanner.adapters.RecordListAdapters
 import com.jaewchoi.barcodescanner.databinding.FragmentBarcodeDialogBinding
+import com.jaewchoi.barcodescanner.utils.BarcodeUtils
 import com.jaewchoi.barcodescanner.viewmodels.CameraViewModel
 import com.jaewchoi.barcodescanner.viewmodels.ScanHistoryViewModel
 
@@ -70,16 +71,11 @@ class BarcodeDialogFragment(
             viewModel.requestRecord()
         }
         binding.urlButton.setOnClickListener {
-            val url =
-                if (viewModel.barcode.value?.valueType == Barcode.TYPE_URL) {
-                    viewModel.barcode.value?.url?.url
-                } else {
-                    viewModel.barcode.value?.rawValue
-                }
-            val pm = requireActivity().packageManager
+            val url = BarcodeUtils.extractUrl(viewModel.barcode.value)
             val intent = url
                 ?.takeIf { it.isNotBlank() }
                 ?.let { Intent(Intent.ACTION_VIEW, Uri.parse(it)) }
+            val pm = requireActivity().packageManager
             if (intent?.resolveActivity(pm) != null) {
                 startActivity(intent)
             } else {
