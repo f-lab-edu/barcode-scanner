@@ -5,6 +5,8 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -67,7 +69,27 @@ class BarcodeDialogFragment(
         binding.searchSheetButton.setOnClickListener {
             viewModel.requestRecord()
         }
-        // 다른 버튼의 클릭 리스너도 추후 구현 예정
+        binding.urlButton.setOnClickListener {
+            val url =
+                if (viewModel.barcode.value?.valueType == Barcode.TYPE_URL) {
+                    viewModel.barcode.value?.url?.url
+                } else {
+                    viewModel.barcode.value?.rawValue
+                }
+            val pm = requireActivity().packageManager
+            val intent = url
+                ?.takeIf { it.isNotBlank() }
+                ?.let { Intent(Intent.ACTION_VIEW, Uri.parse(it)) }
+            if (intent?.resolveActivity(pm) != null) {
+                startActivity(intent)
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.fail_open_url),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
 
         return binding.root
     }

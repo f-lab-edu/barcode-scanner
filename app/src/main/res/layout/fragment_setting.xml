@@ -99,39 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
-                android:text="Sheet 설정"
-                android:textSize="16sp" />
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_chevron_right" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_camera_setting"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="horizontal"
-            android:paddingVertical="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_sheet_setting">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_camera_alt" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_weight="1"
-                android:text="Camera 설정"
+                android:text="@string/sheet_setting"
                 android:textSize="16sp" />
 
             <ImageView

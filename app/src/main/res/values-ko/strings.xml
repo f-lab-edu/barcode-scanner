@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Barcode Scanner</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="flash_on">Flash On</string>
+    <string name="flash_off">Flash Off</string>
+    <string name="login">로그인</string>
+    <string name="logout">로그아웃</string>
+    <string name="sheet_setting">Sheet 설정</string>
+    <string name="delete_all">전체삭제</string>
+    <string name="empty_string" />
+
+    <!-- Hints -->
+    <string name="edit_file_id_hint">예: 1sOgrFQDhR6BaCVWFCE71swOdYIraF7uY3cIEIcamqEw</string>
+    <string name="edit_sheets_name_hint">예: 상품목록</string>
+    <string name="edit_field_count_hint">예: 4</string>
+    <string name="edit_table_cell_hint">예: B2</string>
+    <string name="edit_barcode_column_hint">예: D</string>
+
+    <!-- Labels -->
+    <string name="text_file_id_string">시트 파일 ID</string>
+    <string name="text_sheets_name_string">시트 이름</string>
+    <string name="text_field_count_string">열 개수</string>
+    <string name="text_table_cell_string">테이블 시작 셀</string>
+    <string name="text_barcode_column_string">바코드 열</string>
+
+    <!-- Buttons -->
+    <string name="cancel_button">CANCEL</string>
+    <string name="sheet_button">SHEET</string>
+    <string name="url_button">URL</string>
+    <string name="copy_button">COPY</string>
+    <string name="delete_button">DELETE</string>
+
+    <!-- Error Messages -->
+    <string name="fail_copy_msg">복사에 실패했습니다.</string>
+    <string name="fail_open_url">잘못된 주소입니다.</string>
+    <string name="failed_find_data">데이터를 찾지 못했습니다.</string>
+    <string name="login_fail_msg">로그인에 실패했습니다.</string>
+    <string name="flash_error_msg">지원되지 않는 기기입니다.</string>
+</resources>

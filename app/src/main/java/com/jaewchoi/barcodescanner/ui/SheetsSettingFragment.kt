@@ -20,13 +20,6 @@ class SheetsSettingFragment : Fragment() {
 
     private val viewModel: SettingViewModel by activityViewModels()
 
-    /*
-    파일 ID, 시트 이름, 필드 개수, 필드 시작 주소
-    저장 버튼 누를시 설정 저장(local data store)
-    해당 설정시 모든 내용이 설정되어야 한다.
-    로그아웃시 모든 설정 내용 삭제
-     */
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

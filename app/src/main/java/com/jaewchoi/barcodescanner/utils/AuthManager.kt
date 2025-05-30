@@ -34,35 +34,12 @@ class AuthManager @Inject constructor(
 
     suspend fun exchangeToken(
         authResponse: AuthorizationResponse
-    ): AuthToken = suspendCancellableCoroutine { cont ->
-        val tokenRequest = authResponse.createTokenExchangeRequest()
-
-        authService.performTokenRequest(tokenRequest) { tokenResponse, authException ->
-            if (tokenResponse != null) {
-                val accessToken = checkNotNull(tokenResponse.accessToken) {
-                    "Access token is null"
-                }
-                val refreshToken = tokenResponse.refreshToken
-                cont.resume(AuthToken(accessToken, refreshToken))
-            } else {
-                cont.resumeWithException(
-                    authException ?: Exception("Token exchange failed")
-                )
-            }
-        }
-    }
-
-    suspend fun exchangeToken2(
-        authResponse: AuthorizationResponse
     ): AuthState = suspendCancellableCoroutine { cont ->
         val tokenRequest = authResponse.createTokenExchangeRequest()
 
         authService.performTokenRequest(tokenRequest) { tokenResponse, authException ->
             if (tokenResponse != null) {
-                // 1) AuthState 초기화
-
                 val authState = AuthState(authResponse, authException)
-                // 2) 토큰 응답 반영
 
                 authState.update(tokenResponse, authException)
                 authState.needsTokenRefresh = true

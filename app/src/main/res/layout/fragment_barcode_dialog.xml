@@ -47,6 +47,19 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="S0022542419726" />
 
+        <TextView
+            android:id="@+id/error_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/failed_find_data"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:visibility="@{viewModel.loadState == LoadState.ERROR ? View.VISIBLE : View.GONE}"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ProgressBar
             android:id="@+id/barcode_progress"
             style="?android:attr/progressBarStyleLarge"
@@ -81,7 +94,7 @@
             android:enabled="@{viewModel.loadState != LoadState.LOADING}"
             android:text="@{viewModel.loadState == LoadState.LOADING ? @string/empty_string  : @string/sheet_button}"
             app:layout_constraintBottom_toTopOf="@id/copy_button"
-            app:layout_constraintEnd_toStartOf="@+id/share_button"
+            app:layout_constraintEnd_toStartOf="@+id/url_button"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ProgressBar
@@ -96,11 +109,11 @@
             app:layout_constraintTop_toTopOf="@id/search_sheet_button" />
 
         <Button
-            android:id="@+id/share_button"
+            android:id="@+id/url_button"
             style="@style/DialogButtonStyle"
             android:layout_marginBottom="8dp"
             android:enabled="@{viewModel.loadState != LoadState.LOADING}"
-            android:text="@{viewModel.loadState == LoadState.LOADING ? @string/empty_string  : @string/share_button}"
+            android:text="@{viewModel.loadState == LoadState.LOADING ? @string/empty_string  : @string/url_button}"
             app:layout_constraintBottom_toTopOf="@id/copy_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/search_sheet_button" />
@@ -111,10 +124,10 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:visibility="@{viewModel.loadState == LoadState.LOADING ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="@id/share_button"
-            app:layout_constraintEnd_toEndOf="@id/share_button"
-            app:layout_constraintStart_toStartOf="@id/share_button"
-            app:layout_constraintTop_toTopOf="@id/share_button" />
+            app:layout_constraintBottom_toBottomOf="@id/url_button"
+            app:layout_constraintEnd_toEndOf="@id/url_button"
+            app:layout_constraintStart_toStartOf="@id/url_button"
+            app:layout_constraintTop_toTopOf="@id/url_button" />
 
         <Button
             android:id="@+id/copy_button"

@@ -39,6 +39,7 @@
             android:layout_height="wrap_content"
             android:text="@string/failed_find_data"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/textColorPrimary"
             android:visibility="@{viewModel.loadState == LoadState.ERROR ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -64,6 +65,7 @@
             android:background="@drawable/button_background"
             android:enabled="@{viewModel.loadState != LoadState.LOADING}"
             android:text="@{viewModel.loadState == LoadState.LOADING ? @string/empty_string :@string/cancel_button}"
+            android:textColor="@color/textColorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
