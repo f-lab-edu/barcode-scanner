@@ -1,30 +1,28 @@
 package com.jaewchoi.barcodescanner
 
 import com.jaewchoi.barcodescanner.data.source.local.TokenStorage
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import com.jaewchoi.barcodescanner.domain.model.AuthToken
 import net.openid.appauth.AuthState
 
 
-class FakeTokenStorage {
-    private val mutex = Mutex()
+class FakeTokenStorage : TokenStorage {
     private var storedState: AuthState? = null
 
-/*    override suspend fun save(authState: AuthState) {
-        mutex.withLock {
-            storedState = authState
-        }
+    override suspend fun save(authState: AuthState) {
+        storedState = authState
     }
 
-    override suspend fun load(): AuthState? {
-        return mutex.withLock {
-            storedState
-        }
-    }
+    override suspend fun load(): AuthState? = storedState
 
     override suspend fun clearAuthToken() {
-        mutex.withLock {
-            storedState = null
-        }
-    }*/
+        storedState = null
+    }
+
+    override suspend fun saveAuthToken(token: AuthToken) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getAuthToken(): AuthToken? {
+        TODO("Not yet implemented")
+    }
 }

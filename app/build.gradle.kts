@@ -75,6 +75,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:$constraintLayoutVersion")
 
     testImplementation("junit:junit:$junitVersion")
+    androidTestImplementation("junit:junit:$junitVersion")
     androidTestImplementation("androidx.test.ext:junit:$testExtJunitVersion")
     androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
@@ -86,6 +87,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
 
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")

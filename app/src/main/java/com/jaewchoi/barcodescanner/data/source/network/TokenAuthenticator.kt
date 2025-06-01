@@ -14,7 +14,6 @@ class TokenAuthenticator @Inject constructor(
 ) {
     suspend fun <T> withFreshTokenCall(call: suspend (accessToken: String) -> T): T {
         val authState = checkNotNull(tokenStorage.load())
-        // performActionWithFreshTokens 는 콜백 기반이므로 suspendCoroutine 로 래핑
         val result: T = suspendCancellableCoroutine { cont ->
             authState.performActionWithFreshTokens(authService) { accessToken, _, ex ->
                 if (ex != null) {
