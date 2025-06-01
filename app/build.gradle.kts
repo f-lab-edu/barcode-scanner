@@ -67,20 +67,25 @@ dependencies {
     val appAuthVersion: String by project
     val datastoreVersion: String by project
     val roomVersion: String by project
+    val mockkVersion: String by project
 
     implementation("androidx.core:core-ktx:$kotlinVersion")
     implementation("androidx.appcompat:appcompat:$appCompatVersion")
     implementation("com.google.android.material:material:$materialVersion")
     implementation("androidx.constraintlayout:constraintlayout:$constraintLayoutVersion")
+
     testImplementation("junit:junit:$junitVersion")
     androidTestImplementation("androidx.test.ext:junit:$testExtJunitVersion")
     androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelKtxVersion")
     implementation("androidx.activity:activity-ktx:$activityKtxVersion")
     implementation("androidx.fragment:fragment-ktx:$fragmentKtxVersion")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
 
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")

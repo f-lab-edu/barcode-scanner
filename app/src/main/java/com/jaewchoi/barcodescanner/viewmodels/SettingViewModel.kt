@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.jaewchoi.barcodescanner.data.source.network.UserInfo
+import com.jaewchoi.barcodescanner.data.model.network.UserInfo
 import com.jaewchoi.barcodescanner.domain.model.SheetsSettings
 import com.jaewchoi.barcodescanner.domain.usecase.FetchGoogleUserUseCase
 import com.jaewchoi.barcodescanner.domain.usecase.FetchSheetsSettingsUseCase

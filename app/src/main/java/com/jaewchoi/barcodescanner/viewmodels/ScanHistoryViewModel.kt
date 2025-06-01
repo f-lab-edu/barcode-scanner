@@ -5,9 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.PrimaryKey
-import com.jaewchoi.barcodescanner.data.source.local.ScanHistory
-import com.jaewchoi.barcodescanner.data.source.network.Record
+import com.jaewchoi.barcodescanner.data.model.local.ScanHistory
+import com.jaewchoi.barcodescanner.data.model.network.Record
 import com.jaewchoi.barcodescanner.domain.usecase.ClearHistoryUseCase
 import com.jaewchoi.barcodescanner.domain.usecase.DeleteHistoryUseCase
 import com.jaewchoi.barcodescanner.domain.usecase.FetchHistoryUseCase

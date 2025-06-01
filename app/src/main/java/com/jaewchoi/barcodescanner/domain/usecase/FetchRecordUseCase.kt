@@ -1,8 +1,7 @@
 package com.jaewchoi.barcodescanner.domain.usecase
 
 import com.jaewchoi.barcodescanner.data.repository.SheetsRepository
-import com.jaewchoi.barcodescanner.data.source.network.Record
-import retrofit2.Response
+import com.jaewchoi.barcodescanner.data.model.network.Record
 import javax.inject.Inject
 
 class FetchRecordUseCase @Inject constructor(

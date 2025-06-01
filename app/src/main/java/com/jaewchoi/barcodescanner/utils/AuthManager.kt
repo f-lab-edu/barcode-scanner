@@ -13,15 +13,16 @@ import net.openid.appauth.ResponseTypeValues
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import androidx.core.net.toUri
 
 class AuthManager @Inject constructor(
     private val authService: AuthorizationService,
 ) {
     private val serviceConfig = AuthorizationServiceConfiguration(
-        Uri.parse(AUTHORIZATION_ENDPOINT),
-        Uri.parse(TOKEN_ENDPOINT)
+        AUTHORIZATION_ENDPOINT.toUri(),
+        TOKEN_ENDPOINT.toUri()
     )
-    private val redirectUri = Uri.parse(REDIRECT_URI)
+    private val redirectUri = REDIRECT_URI.toUri()
 
     private val authRequest = AuthorizationRequest.Builder(
         serviceConfig,

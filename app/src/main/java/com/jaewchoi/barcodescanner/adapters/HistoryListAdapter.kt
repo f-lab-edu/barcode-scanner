@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jaewchoi.barcodescanner.databinding.ItemHistoryListBinding
-import com.jaewchoi.barcodescanner.data.source.local.ScanHistory
+import com.jaewchoi.barcodescanner.data.model.local.ScanHistory
 
 class HistoryListAdapter(
     val onDeleteHistory: (id: Long) -> Unit,

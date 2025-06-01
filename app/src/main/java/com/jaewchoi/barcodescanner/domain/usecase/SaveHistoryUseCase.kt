@@ -2,7 +2,7 @@ package com.jaewchoi.barcodescanner.domain.usecase
 
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.jaewchoi.barcodescanner.data.repository.ScanHistoryRepository
-import com.jaewchoi.barcodescanner.data.source.local.ScanHistory
+import com.jaewchoi.barcodescanner.data.model.local.ScanHistory
 import com.jaewchoi.barcodescanner.utils.BarcodeUtils
 import javax.inject.Inject
 

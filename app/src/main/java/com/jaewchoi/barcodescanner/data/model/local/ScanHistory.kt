@@ -1,4 +1,4 @@
-package com.jaewchoi.barcodescanner.data.source.local
+package com.jaewchoi.barcodescanner.data.model.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

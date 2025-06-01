@@ -5,7 +5,7 @@
 
         <variable
             name="history"
-            type="com.jaewchoi.barcodescanner.data.source.local.ScanHistory" />
+            type="com.jaewchoi.barcodescanner.data.model.local.ScanHistory" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

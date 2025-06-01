@@ -1,6 +1,6 @@
 package com.jaewchoi.barcodescanner.data.repository
 
-import com.jaewchoi.barcodescanner.data.source.local.ScanHistory
+import com.jaewchoi.barcodescanner.data.model.local.ScanHistory
 import com.jaewchoi.barcodescanner.data.source.local.ScanHistoryDao
 import javax.inject.Inject
 

@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.mlkit.vision.barcode.common.Barcode
-import com.jaewchoi.barcodescanner.data.source.network.Record
+import com.jaewchoi.barcodescanner.data.model.network.Record
 import com.jaewchoi.barcodescanner.domain.usecase.FetchRecordUseCase
 import com.jaewchoi.barcodescanner.domain.usecase.SaveHistoryUseCase
 import com.jaewchoi.barcodescanner.ui.model.LoadState
