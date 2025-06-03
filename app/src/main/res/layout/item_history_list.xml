@@ -74,13 +74,13 @@
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <Button
-                    android:id="@+id/btn_copy"
+                    android:id="@+id/btn_url"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorSecondary"
                     android:padding="0dp"
-                    android:text="@string/copy_button"
+                    android:text="@string/url_button"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
             </LinearLayout>
 
@@ -91,14 +91,14 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/btn_url"
+                    android:id="@+id/btn_copy"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorSecondary"
                     android:padding="0dp"
-                    android:text="@string/url_button"
+                    android:text="@string/copy_button"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <Button

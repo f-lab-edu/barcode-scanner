@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.jaewchoi.barcodescanner.R
 import com.jaewchoi.barcodescanner.adapters.HistoryListAdapter
 import com.jaewchoi.barcodescanner.databinding.FragmentScanHistoryBinding
+import com.jaewchoi.barcodescanner.utils.openUrlInBrowser
 import com.jaewchoi.barcodescanner.viewmodels.ScanHistoryViewModel
 
 class ScanHistoryFragment : Fragment() {
@@ -38,18 +39,14 @@ class ScanHistoryFragment : Fragment() {
                 viewModel.fetchRecord(barcodeValue)
             },
             { url ->
-                val intent = url
-                    ?.takeIf { it.isNotBlank() }
-                    ?.let { Intent(Intent.ACTION_VIEW, Uri.parse(it)) }
-                val pm = requireActivity().packageManager
-                if (intent?.resolveActivity(pm) != null) {
-                    startActivity(intent)
-                } else {
+                if (url.isNullOrBlank()) {
                     Toast.makeText(
                         requireContext(),
                         getString(R.string.fail_open_url),
                         Toast.LENGTH_SHORT
                     ).show()
+                } else {
+                    requireContext().openUrlInBrowser(url)
                 }
             }
         )

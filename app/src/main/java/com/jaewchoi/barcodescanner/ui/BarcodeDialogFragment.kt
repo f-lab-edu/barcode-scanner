@@ -6,7 +6,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,13 +13,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import com.google.mlkit.vision.barcode.common.Barcode
 import com.jaewchoi.barcodescanner.R
 import com.jaewchoi.barcodescanner.adapters.RecordListAdapters
 import com.jaewchoi.barcodescanner.databinding.FragmentBarcodeDialogBinding
-import com.jaewchoi.barcodescanner.utils.BarcodeUtils
 import com.jaewchoi.barcodescanner.viewmodels.CameraViewModel
 import com.jaewchoi.barcodescanner.viewmodels.ScanHistoryViewModel
+import androidx.core.net.toUri
+import com.jaewchoi.barcodescanner.utils.UiEvent
+import com.jaewchoi.barcodescanner.utils.openUrlInBrowser
 
 class BarcodeDialogFragment(
     private val onDialogDismissed: () -> Unit
@@ -50,40 +50,44 @@ class BarcodeDialogFragment(
         binding.recordList.adapter = recyclerAdapter
 
         binding.cancelButton.setOnClickListener {
-            dismiss()
+            viewModel.onCancelClicked()
         }
         binding.copyButton.setOnClickListener {
-            val text = viewModel.barcode.value?.rawValue
-            if (text == null) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.fail_copy_msg),
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
-            }
-            val clipboard =
-                requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("barcode", text)
-            clipboard.setPrimaryClip(clip)
+            viewModel.onCopyClicked()
         }
         binding.searchSheetButton.setOnClickListener {
-            viewModel.requestRecord()
+            viewModel.onSearchSheetClicked()
         }
         binding.urlButton.setOnClickListener {
-            val url = BarcodeUtils.extractUrl(viewModel.barcode.value)
-            val intent = url
-                ?.takeIf { it.isNotBlank() }
-                ?.let { Intent(Intent.ACTION_VIEW, Uri.parse(it)) }
-            val pm = requireActivity().packageManager
-            if (intent?.resolveActivity(pm) != null) {
-                startActivity(intent)
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.fail_open_url),
-                    Toast.LENGTH_SHORT
-                ).show()
+            viewModel.onUrlClicked()
+        }
+
+        viewModel.uiEvent.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { uiEvent ->
+                when (uiEvent) {
+                    is UiEvent.DismissDialog -> {
+                        dismiss()
+                    }
+
+                    is UiEvent.ShowToast -> {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(uiEvent.resId),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    is UiEvent.CopyToClipboard -> {
+                        val clipboard =
+                            requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip = ClipData.newPlainText("barcode", uiEvent.text)
+                        clipboard.setPrimaryClip(clip)
+                    }
+
+                    is UiEvent.OpenUrl -> {
+                        requireContext().openUrlInBrowser(uiEvent.url)
+                    }
+                }
             }
         }
 
@@ -101,7 +105,7 @@ class BarcodeDialogFragment(
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         historyViewModel.fetchHistory()
-        viewModel.barcodeDialogDismiss()
+        viewModel.initBarcode()
         onDialogDismissed()
     }
 }
