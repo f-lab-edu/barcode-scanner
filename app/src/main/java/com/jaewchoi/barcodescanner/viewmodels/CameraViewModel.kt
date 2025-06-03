@@ -83,12 +83,6 @@ class CameraViewModel @Inject constructor(
         }
     }
 
-    /*
-    fun setBarcode(new: Barcode) {
-        _barcode.value = new
-    }
-    */
-
     fun onCancelClicked() {
         _uiEvent.value = Event(UiEvent.DismissDialog)
     }
@@ -107,7 +101,7 @@ class CameraViewModel @Inject constructor(
     }
 
     fun onUrlClicked() {
-        val extracted: String? = BarcodeUtils.extractUrl(_barcode.value)
+        val extracted = urlString.value
         if (extracted.isNullOrBlank()) {
             _uiEvent.value = Event(UiEvent.ShowToast(R.string.fail_open_url))
         } else {
