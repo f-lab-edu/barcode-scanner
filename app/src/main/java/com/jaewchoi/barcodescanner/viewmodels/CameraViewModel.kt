@@ -44,8 +44,7 @@ class CameraViewModel @Inject constructor(
     val uiEvent: LiveData<Event<UiEvent>>
         get() = _uiEvent
 
-    private val urlString: String?
-        get() = _barcode.value?.let { BarcodeUtils.extractUrl(it) }
+    private var urlString: String? = null
 
     fun initBarcode() {
         _loadState.value = LoadState.IDLE
@@ -62,6 +61,7 @@ class CameraViewModel @Inject constructor(
 
     fun setBarcodeData(barcode: Barcode) {
         _barcode.value = barcode
+        urlString = _barcode.value?.let { BarcodeUtils.extractUrl(it) }
         viewModelScope.launch(Dispatchers.IO) {
             saveHistoryUseCase(barcode)
         }
