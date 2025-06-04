@@ -45,6 +45,4 @@ google-services.json
 .externalNativeBuild
 .cxx
 local.properties
->>>>>>> daa88fb (Initial commit)
->>>>>>> 1aed7d0 (create project)
->>>>>>> ccc1b71 (create project)
+/app/release/
