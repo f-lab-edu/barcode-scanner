@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.jaewchoi.barcodescanner.R
 import com.jaewchoi.barcodescanner.databinding.FragmentSettingBinding
+import com.jaewchoi.barcodescanner.utils.openUrlInBrowser
 import com.jaewchoi.barcodescanner.viewmodels.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -50,6 +51,10 @@ class SettingFragment : Fragment() {
 
         binding.layoutSheetSetting.setOnClickListener {
             findNavController().navigate(R.id.action_settingFragment_to_sheetsSettingFragment)
+        }
+
+        binding.privacyPolicyUrl.setOnClickListener {
+            requireContext().openUrlInBrowser(getString(R.string.privacy_policy_url))
         }
 
         viewLifecycleOwner.lifecycleScope.launch {

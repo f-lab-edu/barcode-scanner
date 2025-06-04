@@ -8,6 +8,8 @@
     <string name="sheet_setting">Sheet Setting</string>
     <string name="delete_all">Delete All</string>
     <string name="empty_string" />
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy_url" translatable="false">https://www.notion.so/2079d3557fe780c98e48d250fe06af23?source=copy_link</string>
 
     <!-- Hints -->
     <string name="edit_file_id_hint">Example: 1sOgrFQDhR6BaCVWFCE71swOdYIraF7uY3cIEIcamqEw</string>
@@ -36,4 +38,5 @@
     <string name="failed_find_data">Data not found</string>
     <string name="login_fail_msg">Login failed</string>
     <string name="flash_error_msg">device does not have flash</string>
+
 </resources>
