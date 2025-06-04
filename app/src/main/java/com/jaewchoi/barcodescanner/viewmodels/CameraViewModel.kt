@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.jaewchoi.barcodescanner.R
@@ -45,9 +44,8 @@ class CameraViewModel @Inject constructor(
     val uiEvent: LiveData<Event<UiEvent>>
         get() = _uiEvent
 
-    val urlString = _barcode.map { barcode ->
-        BarcodeUtils.extractUrl(barcode)
-    }
+    private val urlString: String?
+        get() = _barcode.value?.let { BarcodeUtils.extractUrl(it) }
 
     fun initBarcode() {
         _loadState.value = LoadState.IDLE
@@ -101,7 +99,7 @@ class CameraViewModel @Inject constructor(
     }
 
     fun onUrlClicked() {
-        val extracted = urlString.value
+        val extracted = urlString
         if (extracted.isNullOrBlank()) {
             _uiEvent.value = Event(UiEvent.ShowToast(R.string.fail_open_url))
         } else {

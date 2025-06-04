@@ -48,20 +48,26 @@ class BarcodeDialogFragment(
 
         val recyclerAdapter = RecordListAdapters()
         binding.recordList.adapter = recyclerAdapter
+        observeUiEvent()
+        return binding.root
+    }
 
-        binding.cancelButton.setOnClickListener {
-            viewModel.onCancelClicked()
-        }
-        binding.copyButton.setOnClickListener {
-            viewModel.onCopyClicked()
-        }
-        binding.searchSheetButton.setOnClickListener {
-            viewModel.onSearchSheetClicked()
-        }
-        binding.urlButton.setOnClickListener {
-            viewModel.onUrlClicked()
-        }
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+    }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        historyViewModel.fetchHistory()
+        viewModel.initBarcode()
+        onDialogDismissed()
+    }
+
+    private fun observeUiEvent() {
         viewModel.uiEvent.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { uiEvent ->
                 when (uiEvent) {
@@ -90,22 +96,5 @@ class BarcodeDialogFragment(
                 }
             }
         }
-
-        return binding.root
-    }
-
-    override fun onStart() {
-        super.onStart()
-        dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        historyViewModel.fetchHistory()
-        viewModel.initBarcode()
-        onDialogDismissed()
     }
 }
