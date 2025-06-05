@@ -10,6 +10,7 @@
     <string name="empty_string" />
     <string name="privacy_policy">Privacy Policy</string>
     <string name="privacy_policy_url" translatable="false">https://www.notion.so/2079d3557fe780c98e48d250fe06af23?source=copy_link</string>
+    <string name="open_source_licenses">Open Source Licenses</string>
 
     <!-- Hints -->
     <string name="edit_file_id_hint">Example: 1sOgrFQDhR6BaCVWFCE71swOdYIraF7uY3cIEIcamqEw</string>

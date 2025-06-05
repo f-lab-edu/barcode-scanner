@@ -6,6 +6,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
+    id("com.google.android.gms.oss-licenses-plugin")
     kotlin("plugin.serialization") version "2.0.21"
 }
 
@@ -32,6 +33,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -68,6 +70,7 @@ dependencies {
     val datastoreVersion: String by project
     val roomVersion: String by project
     val mockkVersion: String by project
+    val ossVersion: String by project
 
     implementation("androidx.core:core-ktx:$kotlinVersion")
     implementation("androidx.appcompat:appcompat:$appCompatVersion")
@@ -113,6 +116,8 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
+
+    implementation("com.google.android.gms:play-services-oss-licenses:$ossVersion")
 }
 
 kapt {

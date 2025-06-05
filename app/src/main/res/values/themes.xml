@@ -23,4 +23,12 @@
     </style>
 
     <style name="Theme.BarcodeScanner" parent="Base.Theme.BarcodeScanner" />
+
+    <style name="Theme.OssLicenses.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="android:statusBarColor">#B4B4B4</item>
+        <item name="android:textColorLink">#1E88E5</item>
+    </style>
+
 </resources>
