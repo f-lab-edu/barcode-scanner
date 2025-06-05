@@ -21,7 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="전체삭제"
+            android:backgroundTint="@color/colorSecondary"
+            android:text="@string/delete_all"
             android:onClick="@{() -> viewModel.clearAllHistory()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

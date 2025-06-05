@@ -6,13 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.mlkit.vision.barcode.common.Barcode
-import com.jaewchoi.barcodescanner.data.source.local.TokenStorage
-import com.jaewchoi.barcodescanner.data.source.network.Record
+import com.jaewchoi.barcodescanner.R
+import com.jaewchoi.barcodescanner.data.model.network.Record
 import com.jaewchoi.barcodescanner.domain.usecase.FetchRecordUseCase
 import com.jaewchoi.barcodescanner.domain.usecase.SaveHistoryUseCase
-import com.jaewchoi.barcodescanner.data.source.network.RecordApi
 import com.jaewchoi.barcodescanner.ui.model.LoadState
-import com.jaewchoi.barcodescanner.ui.model.RecordListItem
+import com.jaewchoi.barcodescanner.utils.BarcodeUtils
+import com.jaewchoi.barcodescanner.utils.Event
+import com.jaewchoi.barcodescanner.utils.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,6 +27,7 @@ class CameraViewModel @Inject constructor(
     private val _barcode = MutableLiveData<Barcode?>(null)
     val barcode: LiveData<Barcode?>
         get() = _barcode
+
     private val _isFlashOn = MutableLiveData(false)
     val isFlashOn: LiveData<Boolean>
         get() = _isFlashOn
@@ -38,6 +40,18 @@ class CameraViewModel @Inject constructor(
     val loadState: LiveData<LoadState>
         get() = _loadState
 
+    private val _uiEvent = MutableLiveData<Event<UiEvent>>()
+    val uiEvent: LiveData<Event<UiEvent>>
+        get() = _uiEvent
+
+    private var urlString: String? = null
+
+    fun initBarcode() {
+        _loadState.value = LoadState.IDLE
+        _barcode.value = null
+        _record.value = null
+    }
+
     fun toggleFlash() {
         val value = _isFlashOn.value
         value?.let {
@@ -47,15 +61,10 @@ class CameraViewModel @Inject constructor(
 
     fun setBarcodeData(barcode: Barcode) {
         _barcode.value = barcode
+        urlString = _barcode.value?.let { BarcodeUtils.extractUrl(it) }
         viewModelScope.launch(Dispatchers.IO) {
-            saveHistoryUseCase(barcode.rawValue ?: "")
+            saveHistoryUseCase(barcode)
         }
-    }
-
-    fun barcodeDialogDismiss() {
-        _loadState.value = LoadState.IDLE
-        _barcode.value = null
-        _record.value = null
     }
 
     fun requestRecord() {
@@ -69,6 +78,32 @@ class CameraViewModel @Inject constructor(
                 _loadState.value = LoadState.ERROR
                 Log.e("record_", e.message.toString())
             }
+        }
+    }
+
+    fun onCancelClicked() {
+        _uiEvent.value = Event(UiEvent.DismissDialog)
+    }
+
+    fun onCopyClicked() {
+        val rawText = _barcode.value?.rawValue
+        if (rawText.isNullOrBlank()) {
+            _uiEvent.value = Event(UiEvent.ShowToast(R.string.fail_copy_msg))
+        } else {
+            _uiEvent.value = Event(UiEvent.CopyToClipboard(rawText))
+        }
+    }
+
+    fun onSearchSheetClicked() {
+        requestRecord()
+    }
+
+    fun onUrlClicked() {
+        val extracted = urlString
+        if (extracted.isNullOrBlank()) {
+            _uiEvent.value = Event(UiEvent.ShowToast(R.string.fail_open_url))
+        } else {
+            _uiEvent.value = Event(UiEvent.OpenUrl(extracted))
         }
     }
 
