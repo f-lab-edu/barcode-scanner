@@ -38,7 +38,9 @@
 - 카메라 권한 허용
 
 ## 🧾 Open Source Licenses
+This project is licensed under the [Apache License 2.0](LICENSE).
 
+It also uses the following open source libraries:
 - [Retrofit](https://square.github.io/retrofit/) — Apache License 2.0
 - [ML Kit Barcode Scanning](https://developers.google.com/ml-kit/vision/barcode-scanning) — Apache License 2.0
 - [CameraX](https://developer.android.com/training/camerax) — Apache License 2.0
