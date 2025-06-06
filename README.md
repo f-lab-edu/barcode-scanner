@@ -15,6 +15,7 @@
 - 📦 바코드로 Google sheet에서 데이터 불러오기
 
 ## 📸 스크린샷
+
 | 스캔 화면 | sheet 화면 | 기록 목록 |
 |-----------|------------|-------------|
 | ![screenshot-barcode](https://github.com/user-attachments/assets/90e78030-4b38-4f33-8718-a98d19586928) | ![screenshot-sheet](https://github.com/user-attachments/assets/935fbb7c-b978-46a8-911e-67d0c208a257)| ![screenshot-history](https://github.com/user-attachments/assets/06a04aaf-4343-4d2c-865a-dc44888dd0b2)|
@@ -48,5 +49,8 @@ It also uses the following open source libraries:
 - [AppAuth for Android](https://github.com/openid/AppAuth-Android) — Apache License 2.0
 - [Jetpack DataStore](https://developer.android.com/topic/libraries/architecture/datastore) — Apache License 2.0
 - [Room](https://developer.android.com/training/data-storage/room) — Apache License 2.0
+
+## 개인정보처리방침
+- [개인정보처리방침](https://f-lab-edu.github.io/barcode-scanner/privacy-policy.html)
 
 
