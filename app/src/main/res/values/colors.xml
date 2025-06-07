@@ -4,4 +4,28 @@
     <color name="white">#FFFFFFFF</color>
     <color name="textColorPrimary">#212121</color>
     <color name="textHintColor">#9E9E9E</color>
+
+    <!-- Primary Color -->
+    <color name="colorPrimary">#B99AD9</color>
+    <color name="colorPrimaryVariant">#A07ACB</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+
+    <!-- Secondary Color -->
+    <color name="colorSecondary">#A8BF56</color>
+    <color name="colorSecondaryVariant">#8CA648</color>
+    <color name="colorOnSecondary">#1A1A1A</color>
+
+    <!-- Backgrounds -->
+    <color name="colorBackground">#F2F2F2</color>
+    <color name="colorSurface">#EBF2B6</color>
+    <color name="colorOnBackground">#1A1A1A</color>
+    <color name="colorOnSurface">#1A1A1A</color>
+
+    <!-- Error / Warning -->
+    <color name="colorError">#D5F26D</color>
+    <color name="colorOnError">#1A1A1A</color>
+
+    <!-- Others -->
+    <color name="textGray">#666666</color>
+    <color name="borderColor">#A8BF56</color>
 </resources>

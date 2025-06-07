@@ -6,23 +6,27 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
+    id("com.google.android.gms.oss-licenses-plugin")
     kotlin("plugin.serialization") version "2.0.21"
 }
 
 android {
     namespace = "com.jaewchoi.barcodescanner"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.jaewchoi.barcodescanner"
         minSdk = 27
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        targetSdk = 34
+        versionCode = 2
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["appAuthRedirectScheme"] = "com.jaewchoi.barcodescanner"
-        buildConfigField("String", "OAUTH_CLIENT_ID", getLocalProperty("client_id"))
+
+        val localClientId = getLocalProperty("client_id")
+        val clientId = localClientId ?: System.getenv("OAUTH_CLIENT_ID")
+        buildConfigField("String", "OAUTH_CLIENT_ID", "$clientId")
     }
 
     buildTypes {
@@ -32,14 +36,15 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "1.8"
     }
     buildFeatures {
         dataBinding = true
@@ -67,20 +72,28 @@ dependencies {
     val appAuthVersion: String by project
     val datastoreVersion: String by project
     val roomVersion: String by project
+    val mockkVersion: String by project
+    val ossVersion: String by project
 
     implementation("androidx.core:core-ktx:$kotlinVersion")
     implementation("androidx.appcompat:appcompat:$appCompatVersion")
     implementation("com.google.android.material:material:$materialVersion")
     implementation("androidx.constraintlayout:constraintlayout:$constraintLayoutVersion")
+
     testImplementation("junit:junit:$junitVersion")
+    androidTestImplementation("junit:junit:$junitVersion")
     androidTestImplementation("androidx.test.ext:junit:$testExtJunitVersion")
     androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelKtxVersion")
     implementation("androidx.activity:activity-ktx:$activityKtxVersion")
     implementation("androidx.fragment:fragment-ktx:$fragmentKtxVersion")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
 
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
@@ -106,17 +119,23 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
+
+    implementation("com.google.android.gms:play-services-oss-licenses:$ossVersion")
 }
 
 kapt {
     correctErrorTypes = true
 }
 
-fun getLocalProperty(key: String): String {
-    val props = Properties()
-    val file = rootProject.file("local.properties")
-    if (file.exists()) {
-        file.inputStream().use { props.load(it) }
+fun getLocalProperty(key: String): String? {
+    val localPropertiesFile = rootProject.file("local.properties")
+
+    if (!localPropertiesFile.exists()) return null
+
+    val properties = Properties()
+    localPropertiesFile.inputStream().use { inputStream ->
+        properties.load(inputStream)
     }
-    return props.getProperty(key, "")
+
+    return properties.getProperty(key)
 }

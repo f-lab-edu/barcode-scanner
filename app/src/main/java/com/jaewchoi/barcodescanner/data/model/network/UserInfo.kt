@@ -1,4 +1,4 @@
-package com.jaewchoi.barcodescanner.data.source.network
+package com.jaewchoi.barcodescanner.data.model.network
 
 data class UserInfo(
     val id: String,

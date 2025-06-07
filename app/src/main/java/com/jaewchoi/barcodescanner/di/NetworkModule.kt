@@ -3,7 +3,6 @@ package com.jaewchoi.barcodescanner.di
 import com.jaewchoi.barcodescanner.data.repository.SheetsRepository
 import com.jaewchoi.barcodescanner.data.repository.UserRepository
 import com.jaewchoi.barcodescanner.data.source.local.SheetsSettingStorage
-import com.jaewchoi.barcodescanner.data.source.local.TokenStorage
 import com.jaewchoi.barcodescanner.domain.usecase.FetchGoogleUserUseCase
 import com.jaewchoi.barcodescanner.domain.usecase.FetchRecordUseCase
 import com.jaewchoi.barcodescanner.data.source.network.RecordApi
@@ -32,7 +31,6 @@ object NetworkModule {
     fun provideUserRepository(
         api: UserInfoApi,
         tokenAuthenticator: TokenAuthenticator,
-        tokenStorage: TokenStorage
     ) =
         UserRepository(api, tokenAuthenticator)
 
@@ -41,7 +39,7 @@ object NetworkModule {
         FetchGoogleUserUseCase(repository)
 
     @Provides
-    fun provideProductApi(tokenStorage: TokenStorage): RecordApi {
+    fun provideProductApi(): RecordApi {
         return Retrofit.Builder()
             .baseUrl(PRODUCT_URI)
             .addConverterFactory(GsonConverterFactory.create())
@@ -54,7 +52,6 @@ object NetworkModule {
         api: RecordApi,
         sheetsStorage: SheetsSettingStorage,
         tokenAuthenticator: TokenAuthenticator,
-        tokenStorage: TokenStorage
     ): SheetsRepository {
         return SheetsRepository(api, sheetsStorage, tokenAuthenticator)
     }

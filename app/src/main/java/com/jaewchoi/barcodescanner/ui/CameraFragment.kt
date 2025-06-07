@@ -22,7 +22,6 @@ import com.jaewchoi.barcodescanner.R
 import com.jaewchoi.barcodescanner.databinding.FragmentCameraBinding
 import com.jaewchoi.barcodescanner.utils.BarcodeAnalyzer
 import com.jaewchoi.barcodescanner.viewmodels.CameraViewModel
-import com.jaewchoi.barcodescanner.viewmodels.ScanHistoryViewModel
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -33,16 +32,21 @@ class CameraFragment : Fragment() {
         }
     }
     private val viewModel: CameraViewModel by activityViewModels()
-    private val historyViewModel: ScanHistoryViewModel by activityViewModels()
     private val cameraExecutor: ExecutorService by lazy { Executors.newSingleThreadExecutor() }
     private var camera: Camera? = null
     private lateinit var barcodeScanner: BarcodeScanner
     private var cameraProvider: ProcessCameraProvider? = null
     private var barcodeAnalyzer: BarcodeAnalyzer? = null
 
+    companion object {
+        private const val BARCODE_DIALOG_TAG = "BarcodeDialog"
+    }
+
     override fun onStart() {
         super.onStart()
-        startCamera()
+        val existingDialog =
+            parentFragmentManager.findFragmentByTag(BARCODE_DIALOG_TAG) as? BarcodeDialogFragment
+        if (existingDialog == null || !existingDialog.isVisible) startCamera()
     }
 
     override fun onCreateView(
@@ -70,7 +74,6 @@ class CameraFragment : Fragment() {
         barcodeScanner = BarcodeScanning.getClient(options)
         barcodeAnalyzer = BarcodeAnalyzer(barcodeScanner) { barcode ->
             viewModel.setBarcodeData(barcode)
-            historyViewModel.initHistories()
             startBarcodeDialog()
         }
 
@@ -85,8 +88,10 @@ class CameraFragment : Fragment() {
             if (camera?.cameraInfo?.hasFlashUnit() == true) {
                 viewModel.toggleFlash()
             } else {
-                Toast.makeText(requireContext(), "device does not have flash", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.flash_error_msg), Toast.LENGTH_SHORT
+                ).show()
             }
         }
         viewModel.isFlashOn.observe(viewLifecycleOwner) { isFlashOn ->
@@ -107,7 +112,6 @@ class CameraFragment : Fragment() {
                     barcodeAnalyzer
                         ?: BarcodeAnalyzer(barcodeScanner) { barcode ->
                             viewModel.setBarcodeData(barcode)
-                            historyViewModel.initHistories()
                             startBarcodeDialog()
                         }.also { barcodeAnalyzer = it }
                 )
@@ -131,7 +135,7 @@ class CameraFragment : Fragment() {
     private fun startBarcodeDialog() {
         val dialogFragment = BarcodeDialogFragment { bindCameraUseCases() }
         cameraProvider?.unbindAll()
-        dialogFragment.show(parentFragmentManager, "BarcodeDialog")
+        dialogFragment.show(parentFragmentManager, BARCODE_DIALOG_TAG)
     }
 
     override fun onStop() {

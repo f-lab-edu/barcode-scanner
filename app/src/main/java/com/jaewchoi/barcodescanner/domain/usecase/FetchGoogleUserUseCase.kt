@@ -1,7 +1,7 @@
 package com.jaewchoi.barcodescanner.domain.usecase
 
 import com.jaewchoi.barcodescanner.data.repository.UserRepository
-import com.jaewchoi.barcodescanner.data.source.network.UserInfo
+import com.jaewchoi.barcodescanner.data.model.network.UserInfo
 import javax.inject.Inject
 
 class FetchGoogleUserUseCase @Inject constructor(

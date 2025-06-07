@@ -13,15 +13,16 @@ import net.openid.appauth.ResponseTypeValues
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import androidx.core.net.toUri
 
 class AuthManager @Inject constructor(
     private val authService: AuthorizationService,
 ) {
     private val serviceConfig = AuthorizationServiceConfiguration(
-        Uri.parse(AUTHORIZATION_ENDPOINT),
-        Uri.parse(TOKEN_ENDPOINT)
+        AUTHORIZATION_ENDPOINT.toUri(),
+        TOKEN_ENDPOINT.toUri()
     )
-    private val redirectUri = Uri.parse(REDIRECT_URI)
+    private val redirectUri = REDIRECT_URI.toUri()
 
     private val authRequest = AuthorizationRequest.Builder(
         serviceConfig,
@@ -34,35 +35,12 @@ class AuthManager @Inject constructor(
 
     suspend fun exchangeToken(
         authResponse: AuthorizationResponse
-    ): AuthToken = suspendCancellableCoroutine { cont ->
-        val tokenRequest = authResponse.createTokenExchangeRequest()
-
-        authService.performTokenRequest(tokenRequest) { tokenResponse, authException ->
-            if (tokenResponse != null) {
-                val accessToken = checkNotNull(tokenResponse.accessToken) {
-                    "Access token is null"
-                }
-                val refreshToken = tokenResponse.refreshToken
-                cont.resume(AuthToken(accessToken, refreshToken))
-            } else {
-                cont.resumeWithException(
-                    authException ?: Exception("Token exchange failed")
-                )
-            }
-        }
-    }
-
-    suspend fun exchangeToken2(
-        authResponse: AuthorizationResponse
     ): AuthState = suspendCancellableCoroutine { cont ->
         val tokenRequest = authResponse.createTokenExchangeRequest()
 
         authService.performTokenRequest(tokenRequest) { tokenResponse, authException ->
             if (tokenResponse != null) {
-                // 1) AuthState 초기화
-
                 val authState = AuthState(authResponse, authException)
-                // 2) 토큰 응답 반영
 
                 authState.update(tokenResponse, authException)
                 authState.needsTokenRefresh = true

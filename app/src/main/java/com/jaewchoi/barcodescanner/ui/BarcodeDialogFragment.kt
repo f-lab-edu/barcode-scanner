@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +13,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import com.google.mlkit.vision.barcode.common.Barcode
 import com.jaewchoi.barcodescanner.R
 import com.jaewchoi.barcodescanner.adapters.RecordListAdapters
 import com.jaewchoi.barcodescanner.databinding.FragmentBarcodeDialogBinding
 import com.jaewchoi.barcodescanner.viewmodels.CameraViewModel
+import com.jaewchoi.barcodescanner.viewmodels.ScanHistoryViewModel
+import androidx.core.net.toUri
+import com.jaewchoi.barcodescanner.utils.UiEvent
+import com.jaewchoi.barcodescanner.utils.openUrlInBrowser
 
 class BarcodeDialogFragment(
     private val onDialogDismissed: () -> Unit
@@ -29,6 +33,7 @@ class BarcodeDialogFragment(
     }
 
     private val viewModel: CameraViewModel by activityViewModels()
+    private val historyViewModel: ScanHistoryViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         setStyle(STYLE_NORMAL, R.style.FullScreenDialogTheme)
@@ -43,30 +48,7 @@ class BarcodeDialogFragment(
 
         val recyclerAdapter = RecordListAdapters()
         binding.recordList.adapter = recyclerAdapter
-
-        binding.cancelButton.setOnClickListener {
-            dismiss()
-        }
-        binding.copyButton.setOnClickListener {
-            val text = viewModel.barcode.value?.rawValue
-            if (text == null) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.fail_copy_msg),
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
-            }
-            val clipboard =
-                requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("barcode", text)
-            clipboard.setPrimaryClip(clip)
-        }
-        binding.searchSheetButton.setOnClickListener {
-            viewModel.requestRecord()
-        }
-        // 다른 버튼의 클릭 리스너도 추후 구현 예정
-
+        observeUiEvent()
         return binding.root
     }
 
@@ -80,7 +62,39 @@ class BarcodeDialogFragment(
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        viewModel.barcodeDialogDismiss()
+        historyViewModel.fetchHistory()
+        viewModel.initBarcode()
         onDialogDismissed()
+    }
+
+    private fun observeUiEvent() {
+        viewModel.uiEvent.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { uiEvent ->
+                when (uiEvent) {
+                    is UiEvent.DismissDialog -> {
+                        dismiss()
+                    }
+
+                    is UiEvent.ShowToast -> {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(uiEvent.resId),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    is UiEvent.CopyToClipboard -> {
+                        val clipboard =
+                            requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip = ClipData.newPlainText("barcode", uiEvent.text)
+                        clipboard.setPrimaryClip(clip)
+                    }
+
+                    is UiEvent.OpenUrl -> {
+                        requireContext().openUrlInBrowser(uiEvent.url)
+                    }
+                }
+            }
+        }
     }
 }

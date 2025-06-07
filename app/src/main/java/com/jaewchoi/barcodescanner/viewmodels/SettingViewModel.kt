@@ -1,16 +1,13 @@
 package com.jaewchoi.barcodescanner.viewmodels
 
 import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.jaewchoi.barcodescanner.data.source.local.TokenStorage
-import com.jaewchoi.barcodescanner.data.source.network.UserInfo
+import com.jaewchoi.barcodescanner.data.model.network.UserInfo
 import com.jaewchoi.barcodescanner.domain.model.SheetsSettings
-import com.jaewchoi.barcodescanner.domain.usecase.ClearSheetsSettingsUseCase
 import com.jaewchoi.barcodescanner.domain.usecase.FetchGoogleUserUseCase
 import com.jaewchoi.barcodescanner.domain.usecase.FetchSheetsSettingsUseCase
 import com.jaewchoi.barcodescanner.domain.usecase.HandleGoogleAuthUseCase
@@ -53,10 +50,8 @@ class SettingViewModel @Inject constructor(
                 val settings = fetchSheetsSettingsUseCase()
                 _sheetsSettings.postValue(settings)
                 val userinfo = fetchGoogleUserUseCase()
-                Log.d("userinfo", "afterLogin: $userinfo")
                 _userInfo.postValue(userinfo)
             } catch (e: Exception) {
-                Log.e("userinfo", "afterLogin: ${e.message}")
                 _userInfo.value = null
             }
         }
@@ -87,12 +82,10 @@ class SettingViewModel @Inject constructor(
 
                 handleGoogleAuthUseCase(authResponse)
                 val userinfo = fetchGoogleUserUseCase()
-                Log.d("userinfo", "login: $userinfo")
                 _userInfo.postValue(userinfo)
 
             } catch (e: Exception) {
                 // 로그인 실패
-                Log.e("userinfo", "login: ${e.message}")
                 failCallback()
             }
         }

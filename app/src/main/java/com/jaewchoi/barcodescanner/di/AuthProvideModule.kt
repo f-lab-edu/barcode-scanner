@@ -14,7 +14,7 @@ import net.openid.appauth.AuthorizationService
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AuthModule {
+object AuthProvideModule {
     @Provides
     fun provideAuthService(@ApplicationContext context: Context) =
         AuthorizationService(context)
@@ -24,9 +24,9 @@ object AuthModule {
     fun provideAuthManager(authService: AuthorizationService) =
         AuthManager(authService)
 
-    @Provides
+/*    @Provides
     fun provideTokenStorage(@ApplicationContext context: Context) =
-        TokenStorage(context)
+        TokenStorageImpl(context)*/
 
     @Provides
     fun provideAuthRepository(authManager: AuthManager, tokenStorage: TokenStorage) =

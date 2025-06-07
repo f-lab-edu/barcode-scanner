@@ -1,12 +1,20 @@
 package com.jaewchoi.barcodescanner
 
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.viewModels
 import com.jaewchoi.barcodescanner.databinding.ActivityMainBinding
 import com.jaewchoi.barcodescanner.viewmodels.CameraViewModel
@@ -27,7 +35,23 @@ class MainActivity : AppCompatActivity() {
     private val scanHistoryViewModel: ScanHistoryViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        WindowCompat.getInsetsController(window, window.decorView)?.let { controller ->
+            controller.hide(WindowInsetsCompat.Type.statusBars())
+            controller.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
+
         setContentView(binding.root)
+
+        val content = findViewById<View>(android.R.id.content)
+        ViewCompat.setOnApplyWindowInsetsListener(content) { view, insets ->
+            val navBarInsets = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            view.setPadding(0, 0, 0, navBarInsets.bottom)
+            insets
+        }
+
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS

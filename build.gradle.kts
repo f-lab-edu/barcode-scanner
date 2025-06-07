@@ -5,3 +5,13 @@ plugins {
     id("com.google.dagger.hilt.android") apply false
     id("com.google.devtools.ksp") apply false
 }
+
+buildscript {
+    val ossPluginVersion: String by project
+    repositories {
+        google()
+    }
+    dependencies {
+        classpath("com.google.android.gms:oss-licenses-plugin:$ossPluginVersion")
+    }
+}

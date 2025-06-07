@@ -14,8 +14,8 @@ class AuthRepository @Inject constructor(
         return authManager.createAuthRequest()
     }
 
-    suspend fun handleAuthResult(authResponse: AuthorizationResponse) {
-        val authState = authManager.exchangeToken2(authResponse)
+    suspend fun saveAuthResult(authResponse: AuthorizationResponse) {
+        val authState = authManager.exchangeToken(authResponse)
         tokenStorage.save(authState)
     }
 
