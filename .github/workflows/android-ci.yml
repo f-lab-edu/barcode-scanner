@@ -35,10 +35,6 @@ jobs:
 
       - name: Download and set up Android SDK
         uses: android-actions/setup-android@v2
-        with:
-          api-level: 35
-          target: android-35
-          components: build-tools;35.0.0,platform-tools
 
       - name: Cache Gradle directories
         uses: actions/cache@v3
