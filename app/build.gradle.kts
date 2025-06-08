@@ -6,6 +6,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
+    id("com.google.android.gms.oss-licenses-plugin")
     kotlin("plugin.serialization") version "2.0.21"
 }
 
@@ -22,7 +23,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["appAuthRedirectScheme"] = "com.jaewchoi.barcodescanner"
-        buildConfigField("String", "OAUTH_CLIENT_ID", getLocalProperty("client_id"))
+
+        val localClientId = getLocalProperty("client_id")
+        val clientId = localClientId ?: System.getenv("OAUTH_CLIENT_ID")
+        buildConfigField("String", "OAUTH_CLIENT_ID", "$clientId")
     }
 
     buildTypes {
@@ -32,6 +36,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -68,6 +73,7 @@ dependencies {
     val datastoreVersion: String by project
     val roomVersion: String by project
     val mockkVersion: String by project
+    val ossVersion: String by project
 
     implementation("androidx.core:core-ktx:$kotlinVersion")
     implementation("androidx.appcompat:appcompat:$appCompatVersion")
@@ -113,17 +119,23 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
+
+    implementation("com.google.android.gms:play-services-oss-licenses:$ossVersion")
 }
 
 kapt {
     correctErrorTypes = true
 }
 
-fun getLocalProperty(key: String): String {
-    val props = Properties()
-    val file = rootProject.file("local.properties")
-    if (file.exists()) {
-        file.inputStream().use { props.load(it) }
+fun getLocalProperty(key: String): String? {
+    val localPropertiesFile = rootProject.file("local.properties")
+
+    if (!localPropertiesFile.exists()) return null
+
+    val properties = Properties()
+    localPropertiesFile.inputStream().use { inputStream ->
+        properties.load(inputStream)
     }
-    return props.getProperty(key, "")
+
+    return properties.getProperty(key)
 }

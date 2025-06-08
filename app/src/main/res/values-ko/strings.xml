@@ -10,6 +10,7 @@
     <string name="delete_all">전체삭제</string>
     <string name="empty_string" />
     <string name="privacy_policy">개인정보처리방침</string>
+    <string name="open_source_licenses">라이선스</string>
 
     <!-- Hints -->
     <string name="edit_file_id_hint">예: 1sOgrFQDhR6BaCVWFCE71swOdYIraF7uY3cIEIcamqEw</string>
@@ -38,5 +39,6 @@
     <string name="failed_find_data">데이터를 찾지 못했습니다.</string>
     <string name="login_fail_msg">로그인에 실패했습니다.</string>
     <string name="flash_error_msg">지원되지 않는 기기입니다.</string>
+
 
 </resources>
