@@ -1,77 +1,37 @@
 package com.jaewchoi.barcodescanner.data.source.local
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import com.jaewchoi.barcodescanner.domain.model.AuthToken
-import kotlinx.coroutines.flow.first
 import net.openid.appauth.AuthState
-import javax.inject.Inject
 
-private val Context.tokenDataStore: DataStore<Preferences> by preferencesDataStore(name = "auth_prefs")
 
-class TokenStorage @Inject constructor(
-    private val context: Context
-) {
+/**
+ * 인증 토큰을 저장·로딩·삭제 하는 기능을 정의한 interface.
+ */
+interface TokenStorage {
+    /**
+     * AuthState 전체(JSON)를 암호화해서 저장
+     */
+    suspend fun save(authState: AuthState)
 
-    private object Keys {
-        val ACCESS_TOKEN = stringPreferencesKey("accessToken")
-        val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
-        val KEY_STATE = stringPreferencesKey("keyState")
-    }
+    /**
+     * 저장된 AuthState(JSON)를 복호화해서 반환.
+     * 저장된 게 없으면 null
+     */
+    suspend fun load(): AuthState?
 
-    companion object {
-        private const val AUTH_TOKEN_ALIAS = "auth_token_alias"
-    }
+    /**
+     * 액세스/리프레시 토큰만 별도로 저장
+     */
+    suspend fun saveAuthToken(token: AuthToken)
 
-    suspend fun save(authState: AuthState) {
-        val stateJson = authState.jsonSerialize().toString()
-        context.tokenDataStore.edit { prefs ->
-            prefs[Keys.KEY_STATE] =
-                KeyStoreCryptoHelper.encrypt(AUTH_TOKEN_ALIAS, stateJson)
-        }
-    }
+    /**
+     * 저장된 액세스/리프레시 토큰을 복호화해서 반환.
+     * 저장된 게 없으면 null
+     */
+    suspend fun getAuthToken(): AuthToken?
 
-    suspend fun load(): AuthState? {
-        val prefs = context.tokenDataStore.data.first()
-        val encAuthState = prefs[Keys.KEY_STATE] ?: return null
-        val authStateJson = KeyStoreCryptoHelper.decrypt(AUTH_TOKEN_ALIAS, encAuthState)
-        return AuthState.jsonDeserialize(authStateJson)
-    }
-
-    suspend fun saveAuthToken(token: AuthToken) {
-        context.tokenDataStore.edit { prefs ->
-            prefs[Keys.ACCESS_TOKEN] =
-                KeyStoreCryptoHelper.encrypt(AUTH_TOKEN_ALIAS, token.accessToken)
-            token.refreshToken?.let {
-                prefs[Keys.REFRESH_TOKEN] = KeyStoreCryptoHelper.encrypt(
-                    AUTH_TOKEN_ALIAS, it
-                )
-            }
-        }
-    }
-
-    suspend fun clearAuthToken() {
-        context.tokenDataStore.edit { prefs ->
-            prefs.remove(Keys.ACCESS_TOKEN)
-            prefs.remove(Keys.REFRESH_TOKEN)
-        }
-    }
-
-    suspend fun getAuthToken(): AuthToken? {
-        val prefs = context.tokenDataStore.data.first()
-        val encAccess = prefs[Keys.ACCESS_TOKEN] ?: return null
-
-        val access = KeyStoreCryptoHelper.decrypt(AUTH_TOKEN_ALIAS, encAccess)
-        val refresh =
-            prefs[Keys.REFRESH_TOKEN]?.let { KeyStoreCryptoHelper.decrypt(AUTH_TOKEN_ALIAS, it) }
-
-        return AuthToken(
-            accessToken = access,
-            refreshToken = refresh
-        )
-    }
+    /**
+     * 액세스/리프레시 토큰만 삭제
+     */
+    suspend fun clearAuthToken()
 }

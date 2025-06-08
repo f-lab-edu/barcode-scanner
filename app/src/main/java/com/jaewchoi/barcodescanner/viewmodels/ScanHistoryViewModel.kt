@@ -5,9 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.PrimaryKey
-import com.jaewchoi.barcodescanner.data.source.local.ScanHistory
-import com.jaewchoi.barcodescanner.data.source.network.Record
+import com.jaewchoi.barcodescanner.data.model.local.ScanHistory
+import com.jaewchoi.barcodescanner.data.model.network.Record
 import com.jaewchoi.barcodescanner.domain.usecase.ClearHistoryUseCase
 import com.jaewchoi.barcodescanner.domain.usecase.DeleteHistoryUseCase
 import com.jaewchoi.barcodescanner.domain.usecase.FetchHistoryUseCase
@@ -56,7 +55,7 @@ class ScanHistoryViewModel @Inject constructor(
         }
     }
 
-    private fun fetchHistory() {
+    fun fetchHistory() {
         viewModelScope.launch(Dispatchers.IO) {
             val histories = fetchHistoryUseCase()
             _histories.postValue(histories)
@@ -66,6 +65,7 @@ class ScanHistoryViewModel @Inject constructor(
     fun fetchRecord(barcodeValue: String) {
         viewModelScope.launch {
             try {
+                _record.value = null
                 _loadState.value = LoadState.LOADING
                 _record.value = fetchRecordUseCase(barcodeValue)
                 _loadState.value = LoadState.SUCCESS

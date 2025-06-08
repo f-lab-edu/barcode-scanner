@@ -8,6 +8,6 @@ class HandleGoogleAuthUseCase @Inject constructor(
     private val authRepository: AuthRepository
 ) {
     suspend operator fun invoke(authResponse: AuthorizationResponse) {
-        authRepository.handleAuthResult(authResponse)
+        authRepository.saveAuthResult(authResponse)
     }
 }

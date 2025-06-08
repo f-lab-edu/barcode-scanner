@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
-                android:text="Sheet 설정"
+                android:text="@string/sheet_setting"
                 android:textSize="16sp" />
 
             <ImageView
@@ -109,7 +109,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layout_camera_setting"
+            android:id="@+id/privacy_policy_url"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -124,14 +124,14 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_camera_alt" />
+                android:src="@drawable/ic_privacy_tip" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
-                android:text="Camera 설정"
+                android:text="@string/privacy_policy"
                 android:textSize="16sp" />
 
             <ImageView

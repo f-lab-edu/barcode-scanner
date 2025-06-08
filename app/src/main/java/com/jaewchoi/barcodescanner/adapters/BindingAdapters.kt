@@ -7,8 +7,8 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import androidx.recyclerview.widget.RecyclerView
-import com.jaewchoi.barcodescanner.data.source.local.ScanHistory
-import com.jaewchoi.barcodescanner.data.source.network.Record
+import com.jaewchoi.barcodescanner.data.model.local.ScanHistory
+import com.jaewchoi.barcodescanner.data.model.network.Record
 import com.jaewchoi.barcodescanner.ui.model.RecordListItem
 
 @BindingAdapter("record")
@@ -33,7 +33,6 @@ fun bindHistoryList(
     val adapter = view.adapter as HistoryListAdapter
     adapter.submitList(histories)
 }
-
 
 @BindingAdapter("app:bindText")
 fun bindText(
