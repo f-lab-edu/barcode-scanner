@@ -52,6 +52,7 @@ jobs:
 
       - name: Restore signing keystore
         run: |
+          mkdir -p app
           echo "$KEYSTORE_BASE64" | base64 --decode > release.keystore
 
       - name: Build Release AAB
