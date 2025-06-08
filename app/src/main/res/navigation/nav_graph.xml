@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/cameraFragment">
+
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.jaewchoi.barcodescanner.ui.CameraFragment"
+        android:label="CameraFragment">
+        <action
+            android:id="@+id/action_cameraFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_cameraFragment_to_scanHistoryFragment"
+            app:destination="@id/scanHistoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.jaewchoi.barcodescanner.ui.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_settingFragment_to_sheetsSettingFragment"
+            app:destination="@id/sheetsSettingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sheetsSettingFragment"
+        android:name="com.jaewchoi.barcodescanner.ui.SheetsSettingFragment"
+        android:label="SheetsSettingFragment" />
+    <fragment
+        android:id="@+id/scanHistoryFragment"
+        android:name="com.jaewchoi.barcodescanner.ui.ScanHistoryFragment"
+        android:label="ScanHistoryFragment" >
+        <action
+            android:id="@+id/action_scanHistoryFragment_to_recordViewFragment"
+            app:destination="@id/recordViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordViewFragment"
+        android:name="com.jaewchoi.barcodescanner.ui.RecordViewFragment"
+        android:label="RecordViewFragment" />
+
+</navigation>

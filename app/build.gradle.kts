@@ -1,20 +1,32 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
+    id("com.google.android.gms.oss-licenses-plugin")
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 android {
     namespace = "com.jaewchoi.barcodescanner"
-    compileSdk = 33
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.jaewchoi.barcodescanner"
         minSdk = 27
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        targetSdk = 34
+        versionCode = 2
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["appAuthRedirectScheme"] = "com.jaewchoi.barcodescanner"
+
+        val localClientId = getLocalProperty("client_id")
+        val clientId = localClientId ?: System.getenv("OAUTH_CLIENT_ID")
+        buildConfigField("String", "OAUTH_CLIENT_ID", "$clientId")
     }
 
     buildTypes {
@@ -24,6 +36,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -33,15 +46,96 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        dataBinding = true
+        buildConfig = true
+    }
 }
 
 dependencies {
+    val kotlinVersion: String by project
+    val appCompatVersion: String by project
+    val materialVersion: String by project
+    val constraintLayoutVersion: String by project
+    val junitVersion: String by project
+    val testExtJunitVersion: String by project
+    val espressoVersion: String by project
+    val viewModelKtxVersion: String by project
+    val activityKtxVersion: String by project
+    val fragmentKtxVersion: String by project
+    val coroutineVersion: String by project
+    val retrofitVersion: String by project
+    val hiltVersion: String by project
+    val cameraxVersion: String by project
+    val mlkitVersion: String by project
+    val navVersion: String by project
+    val appAuthVersion: String by project
+    val datastoreVersion: String by project
+    val roomVersion: String by project
+    val mockkVersion: String by project
+    val ossVersion: String by project
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    implementation("androidx.core:core-ktx:$kotlinVersion")
+    implementation("androidx.appcompat:appcompat:$appCompatVersion")
+    implementation("com.google.android.material:material:$materialVersion")
+    implementation("androidx.constraintlayout:constraintlayout:$constraintLayoutVersion")
+
+    testImplementation("junit:junit:$junitVersion")
+    androidTestImplementation("junit:junit:$junitVersion")
+    androidTestImplementation("androidx.test.ext:junit:$testExtJunitVersion")
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelKtxVersion")
+    implementation("androidx.activity:activity-ktx:$activityKtxVersion")
+    implementation("androidx.fragment:fragment-ktx:$fragmentKtxVersion")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
+
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
+
+    implementation("androidx.camera:camera-core:$cameraxVersion")
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+    implementation("androidx.camera:camera-mlkit-vision:$cameraxVersion")
+
+    implementation("com.google.mlkit:barcode-scanning:$mlkitVersion")
+
+    implementation("androidx.navigation:navigation-fragment:$navVersion")
+    implementation("androidx.navigation:navigation-ui:$navVersion")
+
+    implementation("net.openid:appauth:$appAuthVersion")
+
+    implementation("androidx.datastore:datastore-preferences:$datastoreVersion")
+
+    implementation("androidx.room:room-runtime:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+
+    implementation("com.google.android.gms:play-services-oss-licenses:$ossVersion")
+}
+
+kapt {
+    correctErrorTypes = true
+}
+
+fun getLocalProperty(key: String): String? {
+    val localPropertiesFile = rootProject.file("local.properties")
+
+    if (!localPropertiesFile.exists()) return null
+
+    val properties = Properties()
+    localPropertiesFile.inputStream().use { inputStream ->
+        properties.load(inputStream)
+    }
+
+    return properties.getProperty(key)
 }
