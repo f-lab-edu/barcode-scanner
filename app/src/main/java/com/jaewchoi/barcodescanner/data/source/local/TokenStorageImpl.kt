@@ -57,8 +57,7 @@ class TokenStorageImpl @Inject constructor(
 
     override suspend fun clearAuthToken() {
         context.tokenDataStore.edit { prefs ->
-            prefs.remove(Keys.ACCESS_TOKEN)
-            prefs.remove(Keys.REFRESH_TOKEN)
+            prefs.remove(Keys.KEY_STATE)
         }
     }
 
