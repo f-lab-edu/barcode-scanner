@@ -36,8 +36,8 @@ class SettingViewModel @Inject constructor(
     private val _authRequest = Channel<AuthorizationRequest>(Channel.BUFFERED)
     val authRequest = _authRequest.receiveAsFlow()
 
-    private val _userInfo = MutableLiveData<UserInfo>(null)
-    val userInfo: LiveData<UserInfo>
+    private val _userInfo = MutableLiveData<UserInfo?>(null)
+    val userInfo: LiveData<UserInfo?>
         get() = _userInfo
 
     val isLogin: LiveData<Boolean> = _userInfo.map { it != null }
