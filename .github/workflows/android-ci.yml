@@ -54,11 +54,15 @@ jobs:
 
       - name: Get versionCode
         id: versionCode
-        run: echo "versionCode=$(./gradlew printVersionCode -q)" >> $GITHUB_OUTPUT
+        run: |
+          VERSION_CODE=$(./gradlew printVersionCode -q)
+          echo versionCode=$VERSION_CODE >> $GITHUB_OUTPUT
 
       - name: Get versionName
         id: versionName
-        run: echo "versionName=$(./gradlew printVersionName -q)" >> $GITHUB_OUTPUT
+        run: |
+          VERSION_NAME=$(./gradlew printVersionName -q)
+          echo versionName=$VERSION_NAME >> $GITHUB_OUTPUT
 
       - name: Build Release AAB
         run: |
