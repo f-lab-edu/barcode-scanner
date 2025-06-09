@@ -18,8 +18,8 @@ android {
         applicationId = "com.jaewchoi.barcodescanner"
         minSdk = 27
         targetSdk = 34
-        versionCode = 3
-        versionName = "1.0.2"
+        versionCode = 4
+        versionName = "1.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["appAuthRedirectScheme"] = "com.jaewchoi.barcodescanner"
@@ -49,6 +49,20 @@ android {
     buildFeatures {
         dataBinding = true
         buildConfig = true
+    }
+}
+
+tasks.register("printVersionCode") {
+    group = "versioning"
+    doLast {
+        println(android.defaultConfig.versionCode)
+    }
+}
+
+tasks.register("printVersionName") {
+    group = "versioning"
+    doLast {
+        println(android.defaultConfig.versionName)
     }
 }
 
