@@ -18,15 +18,12 @@ android {
         applicationId = "com.jaewchoi.barcodescanner"
         minSdk = 27
         targetSdk = 34
-        versionCode = 2
-        versionName = "1.0.1"
+        versionCode = 4
+        versionName = "1.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["appAuthRedirectScheme"] = "com.jaewchoi.barcodescanner"
 
-        val localClientId = getLocalProperty("client_id")
-        val clientId = localClientId ?: System.getenv("OAUTH_CLIENT_ID")
-        buildConfigField("String", "OAUTH_CLIENT_ID", "$clientId")
     }
 
     buildTypes {
@@ -49,6 +46,20 @@ android {
     buildFeatures {
         dataBinding = true
         buildConfig = true
+    }
+}
+
+tasks.register("printVersionCode") {
+    group = "versioning"
+    doLast {
+        println(android.defaultConfig.versionCode)
+    }
+}
+
+tasks.register("printVersionName") {
+    group = "versioning"
+    doLast {
+        println(android.defaultConfig.versionName)
     }
 }
 
@@ -125,17 +136,4 @@ dependencies {
 
 kapt {
     correctErrorTypes = true
-}
-
-fun getLocalProperty(key: String): String? {
-    val localPropertiesFile = rootProject.file("local.properties")
-
-    if (!localPropertiesFile.exists()) return null
-
-    val properties = Properties()
-    localPropertiesFile.inputStream().use { inputStream ->
-        properties.load(inputStream)
-    }
-
-    return properties.getProperty(key)
 }

@@ -10,9 +10,9 @@ on:
 
 env:
   SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-  KEYSTORE_BASE64:      ${{ secrets.KEYSTORE_BASE64 }}
-  KEYSTORE_PASSWORD:    ${{ secrets.KEYSTORE_PASSWORD }}
-  SIGNING_KEY_ALIAS:    ${{ secrets.SIGNING_KEY_ALIAS }}
+  KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+  KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+  SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
   SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
 
 jobs:
@@ -35,10 +35,6 @@ jobs:
 
       - name: Download and set up Android SDK
         uses: android-actions/setup-android@v2
-        with:
-          api-level: 35
-          target: android-35
-          components: build-tools;35.0.0,platform-tools
 
       - name: Cache Gradle directories
         uses: actions/cache@v3
@@ -52,18 +48,29 @@ jobs:
 
       - name: Restore signing keystore
         run: |
+          mkdir -p app
           echo "$KEYSTORE_BASE64" | base64 --decode > release.keystore
+          echo "$KEYSTORE_BASE64" | base64 --decode > app/release.keystore
 
-      - name: Build Release AAB (with Java 17)
+      - name: Get versionCode
+        id: versionCode
+        run: |
+          VERSION_CODE=$(./gradlew printVersionCode -q)
+          echo versionCode=$VERSION_CODE >> $GITHUB_OUTPUT
+
+      - name: Get versionName
+        id: versionName
+        run: |
+          VERSION_NAME=$(./gradlew printVersionName -q)
+          echo versionName=$VERSION_NAME >> $GITHUB_OUTPUT
+
+      - name: Build Release AAB
         run: |
           ./gradlew bundleRelease \
             -Pandroid.injected.signing.store.file=release.keystore \
             -Pandroid.injected.signing.store.password=$KEYSTORE_PASSWORD \
             -Pandroid.injected.signing.key.alias=$SIGNING_KEY_ALIAS \
             -Pandroid.injected.signing.key.password=$SIGNING_KEY_PASSWORD
-        env:
-          JAVA_HOME: ${{ runner.tool_cache }}/java/temurin-17-jdk
-          ANDROID_SDK_ROOT: ${{ runner.tool_cache }}/android-sdk
 
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
@@ -73,9 +80,8 @@ jobs:
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
           body: |
-            • versionCode: 2  
-            • versionName: 1.0.1  
-            • OAUTH_CLIENT_ID: (buildConfigField에서 로드)
+            • versionCode: ${{ steps.versionCode.outputs.versionCode }}
+            • versionName: ${{ steps.versionName.outputs.versionName }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

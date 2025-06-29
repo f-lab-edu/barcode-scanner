@@ -4,8 +4,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="flash_on">Flash On</string>
     <string name="flash_off">Flash Off</string>
-    <string name="login">로그인</string>
-    <string name="logout">로그아웃</string>
     <string name="sheet_setting">Sheet 설정</string>
     <string name="delete_all">전체삭제</string>
     <string name="empty_string" />
@@ -37,7 +35,6 @@
     <string name="fail_copy_msg">복사에 실패했습니다.</string>
     <string name="fail_open_url">잘못된 주소입니다.</string>
     <string name="failed_find_data">데이터를 찾지 못했습니다.</string>
-    <string name="login_fail_msg">로그인에 실패했습니다.</string>
     <string name="flash_error_msg">지원되지 않는 기기입니다.</string>
 
 

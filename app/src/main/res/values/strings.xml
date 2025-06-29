@@ -3,8 +3,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="flash_on">Flash On</string>
     <string name="flash_off">Flash Off</string>
-    <string name="login">Login</string>
-    <string name="logout">Logout</string>
     <string name="sheet_setting">Sheet Setting</string>
     <string name="delete_all">Delete All</string>
     <string name="empty_string" />
@@ -37,7 +35,6 @@
     <string name="fail_copy_msg">Failed to copy</string>
     <string name="fail_open_url">Failed to open URL</string>
     <string name="failed_find_data">Data not found</string>
-    <string name="login_fail_msg">Login failed</string>
     <string name="flash_error_msg">device does not have flash</string>
 
 </resources>
