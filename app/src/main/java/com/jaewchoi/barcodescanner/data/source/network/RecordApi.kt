@@ -9,7 +9,6 @@ import retrofit2.http.Query
 interface RecordApi {
     @GET("searchRecord")
     suspend fun searchRecordByBarcode(
-        @Header("Authorization") bearerToken: String,
         @Query("barcode") barcode: String,
         @Query("fileID") fileID: String,
         @Query("sheetsName") sheetsName: String,

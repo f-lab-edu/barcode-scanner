@@ -9,20 +9,16 @@ import javax.inject.Inject
 class SheetsRepository @Inject constructor(
     private val api: RecordApi,
     private val sheetsStorage: SheetsSettingStorage,
-    private val tokenAuthenticator: TokenAuthenticator,
 ) {
     suspend fun fetchRecord(barcode: String): Record {
         val settings = sheetsStorage.getSettings() ?: throw Exception("fetch setting error")
-        return tokenAuthenticator.withFreshTokenCall { accessToken ->
-            api.searchRecordByBarcode(
-                "Bearer $accessToken",
-                barcode,
-                settings.fileID,
-                settings.sheetsName,
-                settings.tableCell,
-                settings.fieldCount,
-                settings.barcodeColumn
-            )
-        }
+        return api.searchRecordByBarcode(
+            barcode,
+            settings.fileID,
+            settings.sheetsName,
+            settings.tableCell,
+            settings.fieldCount,
+            settings.barcodeColumn
+        )
     }
 }

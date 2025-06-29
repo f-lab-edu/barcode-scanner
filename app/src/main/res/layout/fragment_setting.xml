@@ -19,75 +19,18 @@
         android:padding="16dp"
         tools:context=".ui.SettingFragment">
 
-        <ImageView
-            android:id="@+id/image_profile"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_account_circle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/text_user_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@{viewModel.userInfo.name}"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            app:layout_constraintBottom_toTopOf="@id/text_user_email"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/image_profile"
-            app:layout_constraintTop_toTopOf="@id/image_profile"
-            tools:text="홍길동" />
-
-        <TextView
-            android:id="@+id/text_user_email"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@{viewModel.userInfo.email}"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            app:layout_constraintBottom_toBottomOf="@id/image_profile"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/image_profile"
-            app:layout_constraintTop_toBottomOf="@id/text_user_name"
-            tools:text="abcd1234@gmail.com" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:backgroundTint="#EAEAEA"
-            android:onClick="@{() -> viewModel.isLogin ? viewModel.onLogoutClicked() : viewModel.onLoginClicked()}"
-            android:text="@{viewModel.isLogin ? @string/logout : @string/login}"
-            android:textColor="@color/black"
-            app:cornerRadius="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_profile"
-            tools:text="@string/logout" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="24dp"
-            android:background="#333"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_login" />
-
         <LinearLayout
             android:id="@+id/layout_sheet_setting"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="32dp"
             android:clickable="true"
             android:focusable="true"
             android:orientation="horizontal"
             android:paddingVertical="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_login">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:layout_width="24dp"
