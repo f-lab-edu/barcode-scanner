@@ -9,6 +9,7 @@
     <string name="empty_string" />
     <string name="privacy_policy">개인정보처리방침</string>
     <string name="open_source_licenses">라이선스</string>
+    <string name="sheet_setting_guide_url">https://www.notion.so/2219d3557fe7808697a9c18a1f25b8b5?source=copy_link</string>
 
     <!-- Hints -->
     <string name="edit_file_id_hint">예: 1sOgrFQDhR6BaCVWFCE71swOdYIraF7uY3cIEIcamqEw</string>
@@ -16,6 +17,7 @@
     <string name="edit_field_count_hint">예: 4</string>
     <string name="edit_table_cell_hint">예: B2</string>
     <string name="edit_barcode_column_hint">예: D</string>
+    <string name="save">저장</string>
 
     <!-- Labels -->
     <string name="text_file_id_string">시트 파일 ID</string>
@@ -36,6 +38,7 @@
     <string name="fail_open_url">잘못된 주소입니다.</string>
     <string name="failed_find_data">데이터를 찾지 못했습니다.</string>
     <string name="flash_error_msg">지원되지 않는 기기입니다.</string>
+    <string name="setting_page_floating_button_description">go setting help page</string>
 
 
 </resources>

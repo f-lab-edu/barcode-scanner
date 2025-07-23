@@ -9,6 +9,8 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="privacy_policy_url" translatable="false">https://f-lab-edu.github.io/barcode-scanner/privacy-policy.html</string>
     <string name="open_source_licenses">Open Source Licenses</string>
+    <string name="sheet_setting_guide_url">https://www.notion.so/Barcode-Scanner-Sheet-Configuration-Guide-2219d3557fe780acbb27e0c4dde0dbe2?source=copy_link</string>
+    <string name="save">save</string>
 
     <!-- Hints -->
     <string name="edit_file_id_hint">Example: 1sOgrFQDhR6BaCVWFCE71swOdYIraF7uY3cIEIcamqEw</string>
@@ -36,5 +38,6 @@
     <string name="fail_open_url">Failed to open URL</string>
     <string name="failed_find_data">Data not found</string>
     <string name="flash_error_msg">device does not have flash</string>
+    <string name="setting_page_floating_button_description">go setting help page</string>
 
 </resources>
