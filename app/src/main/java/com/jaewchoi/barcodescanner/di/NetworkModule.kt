@@ -19,29 +19,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
     @Provides
-    fun provideGoogleUserInfoApi(): UserInfoApi {
-        return Retrofit.Builder()
-            .baseUrl(USER_INFO_URI)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(UserInfoApi::class.java)
-    }
-
-    @Provides
-    fun provideUserRepository(
-        api: UserInfoApi,
-        tokenAuthenticator: TokenAuthenticator,
-    ) =
-        UserRepository(api, tokenAuthenticator)
-
-    @Provides
-    fun provideFetchGoogleUserUseCase(repository: UserRepository) =
-        FetchGoogleUserUseCase(repository)
-
-    @Provides
     fun provideProductApi(): RecordApi {
         return Retrofit.Builder()
-            .baseUrl(PRODUCT_URI)
+            .baseUrl(SHEET_RECORD_URI)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(RecordApi::class.java)
@@ -51,15 +31,13 @@ object NetworkModule {
     fun provideSheetsRepository(
         api: RecordApi,
         sheetsStorage: SheetsSettingStorage,
-        tokenAuthenticator: TokenAuthenticator,
     ): SheetsRepository {
-        return SheetsRepository(api, sheetsStorage, tokenAuthenticator)
+        return SheetsRepository(api, sheetsStorage)
     }
 
     @Provides
     fun provideFetchRecordUseCase(repository: SheetsRepository) =
         FetchRecordUseCase(repository)
 
-    private const val USER_INFO_URI = "https://www.googleapis.com/oauth2/v2/"
-    private const val PRODUCT_URI = "https://searchrecord-pg73pmoduq-uc.a.run.app/"
+    private const val SHEET_RECORD_URI = "https://searchrecord-pg73pmoduq-uc.a.run.app/"
 }

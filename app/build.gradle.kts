@@ -24,9 +24,6 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["appAuthRedirectScheme"] = "com.jaewchoi.barcodescanner"
 
-        val localClientId = getLocalProperty("client_id")
-        val clientId = localClientId ?: System.getenv("OAUTH_CLIENT_ID")
-        buildConfigField("String", "OAUTH_CLIENT_ID", "$clientId")
     }
 
     buildTypes {
@@ -139,17 +136,4 @@ dependencies {
 
 kapt {
     correctErrorTypes = true
-}
-
-fun getLocalProperty(key: String): String? {
-    val localPropertiesFile = rootProject.file("local.properties")
-
-    if (!localPropertiesFile.exists()) return null
-
-    val properties = Properties()
-    localPropertiesFile.inputStream().use { inputStream ->
-        properties.load(inputStream)
-    }
-
-    return properties.getProperty(key)
 }

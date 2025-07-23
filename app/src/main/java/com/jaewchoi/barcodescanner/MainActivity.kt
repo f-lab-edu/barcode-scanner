@@ -15,7 +15,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import com.google.android.material.appbar.MaterialToolbar
 import com.jaewchoi.barcodescanner.databinding.ActivityMainBinding
 import com.jaewchoi.barcodescanner.viewmodels.CameraViewModel
 import com.jaewchoi.barcodescanner.viewmodels.ScanHistoryViewModel
@@ -37,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        WindowCompat.getInsetsController(window, window.decorView)?.let { controller ->
+        WindowCompat.getInsetsController(window, window.decorView).let { controller ->
             controller.hide(WindowInsetsCompat.Type.statusBars())
             controller.systemBarsBehavior =
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
@@ -57,21 +62,9 @@ class MainActivity : AppCompatActivity() {
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
             )
         }
+        setToolbar()
         settingViewModel.initSettings()
         scanHistoryViewModel.initHistories()
-    }
-
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(baseContext, it) ==
-                PackageManager.PERMISSION_GRANTED
-    }
-
-    companion object {
-        private const val REQUEST_CODE_PERMISSIONS = 10
-        private val REQUIRED_PERMISSIONS =
-            mutableListOf(
-                android.Manifest.permission.CAMERA
-            ).toTypedArray()
     }
 
     override fun onRequestPermissionsResult(
@@ -89,5 +82,41 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController(R.id.nav_host_fragment)
+            .navigateUp() || super.onSupportNavigateUp()
+    }
+
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(baseContext, it) ==
+                PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun setToolbar() {
+        val toolbar = binding.toolbar
+        val navController = findNavController(R.id.nav_host_fragment)
+
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        setupActionBarWithNavController(navController)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.cameraFragment) {
+                binding.toolbar.isVisible = false
+            } else {
+                binding.toolbar.isVisible = true
+            }
+        }
+    }
+
+    companion object {
+        private const val REQUEST_CODE_PERMISSIONS = 10
+        private val REQUIRED_PERMISSIONS =
+            mutableListOf(
+                android.Manifest.permission.CAMERA
+            ).toTypedArray()
     }
 }

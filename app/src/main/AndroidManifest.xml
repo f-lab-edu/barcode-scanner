@@ -28,18 +28,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="net.openid.appauth.RedirectUriReceiverActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:path="/oauth2redirect"
-                    android:scheme="${appAuthRedirectScheme}" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/Theme.OssLicenses.Light" />
         <activity

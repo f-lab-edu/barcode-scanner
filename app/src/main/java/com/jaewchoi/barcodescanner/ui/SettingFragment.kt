@@ -32,19 +32,6 @@ class SettingFragment : Fragment() {
     }
     private val viewModel: SettingViewModel by activityViewModels()
 
-    @Inject
-    lateinit var authService: AuthorizationService
-
-    private val authLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            viewModel.onAuthResponse(result.data) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.login_fail_msg), Toast.LENGTH_SHORT
-                )
-            }
-        }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,15 +49,6 @@ class SettingFragment : Fragment() {
         binding.openSourceLicenses.setOnClickListener {
             requireContext().apply {
                 startActivity(Intent(this, OssLicensesMenuActivity::class.java))
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.authRequest.collect { request ->
-                    val requestIntent = authService.getAuthorizationRequestIntent(request)
-                    authLauncher.launch(requestIntent)
-                }
             }
         }
         return binding.root
