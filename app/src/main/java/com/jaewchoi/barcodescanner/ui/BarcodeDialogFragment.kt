@@ -11,6 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.jaewchoi.barcodescanner.R
@@ -18,7 +21,6 @@ import com.jaewchoi.barcodescanner.adapters.RecordListAdapters
 import com.jaewchoi.barcodescanner.databinding.FragmentBarcodeDialogBinding
 import com.jaewchoi.barcodescanner.viewmodels.CameraViewModel
 import com.jaewchoi.barcodescanner.viewmodels.ScanHistoryViewModel
-import androidx.core.net.toUri
 import com.jaewchoi.barcodescanner.utils.UiEvent
 import com.jaewchoi.barcodescanner.utils.openUrlInBrowser
 
@@ -37,7 +39,24 @@ class BarcodeDialogFragment(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         setStyle(STYLE_NORMAL, R.style.FullScreenDialogTheme)
-        return super.onCreateDialog(savedInstanceState)
+        val dialog = super.onCreateDialog(savedInstanceState)
+
+        dialog.window?.let { window ->
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+
+            ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { view, insets ->
+                val systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                view.setPadding(
+                    systemInsets.left,
+                    systemInsets.top,
+                    systemInsets.right,
+                    systemInsets.bottom
+                )
+                WindowInsetsCompat.CONSUMED
+            }
+        }
+
+        return dialog
     }
 
     override fun onCreateView(
